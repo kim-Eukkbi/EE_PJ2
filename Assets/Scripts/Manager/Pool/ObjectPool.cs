@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectPool<T> : IPool where T : MonoBehaviour
 {
     //private Queue<T> m_queue; // 때에 따라서 Queue 자료구조를 사용하기도 함 
-    private List<T> m_list;     // 하지만 대부분의 상황에서 List를 사용하는 것이 편하기에 List 사용
+    private List<T> m_list = new List<T>();     // 하지만 대부분의 상황에서 List를 사용하는 것이 편하기에 List 사용
     private GameObject prefab;
     private Transform parent;
 
@@ -13,7 +13,6 @@ public class ObjectPool<T> : IPool where T : MonoBehaviour
     {
         this.prefab = prefab;
         this.parent = parent;
-        m_list = new List<T>();
 
         for (int i = 0; i < count; i++) // count만큼 object를 만들고 비활성화 시킨 뒤 m_list에 넣어준다
         {
