@@ -6,7 +6,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject Circle;
+    public GameObject rootObject;
+    public GameObject circle;
+    public GameObject judgeLine;
     
     public float currentTime = 0;
 
