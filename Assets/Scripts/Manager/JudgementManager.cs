@@ -9,9 +9,11 @@ public class JudgementManager : MonoBehaviour
 
     private Vector3 judgementSize;
 
+    public float verticalSize = 1;
+
     private void Update()
     {
-        judgementSize = new Vector3(1, 0.1f, 1) * 
+        judgementSize = new Vector3(1, verticalSize, 1) * 
                         GameManager.instance.rootObject.transform.localScale.x * 
                         GameManager.instance.circle.transform.localScale.x;
 
@@ -28,34 +30,42 @@ public class JudgementManager : MonoBehaviour
         if (col != null)
         {
             NoteManager.RemoveNote(col.gameObject);
+            ComboManager.ComboReset();
         }
     }
 
     private void JudgementCheck()
     {
-        Collider2D col = Physics2D.OverlapBox(GameManager.instance.judgeLine.transform.position,
+        Collider2D perfectCol = Physics2D.OverlapBox(GameManager.instance.judgeLine.transform.position,
                                                 judgementSize,
                                                 GameManager.instance.circle.transform.rotation.eulerAngles.z,
                                                 whatIsNote);
 
-        if(col != null)
+        if(perfectCol != null)
         {
-            Note note = col.GetComponent<Note>();
+            Note note = perfectCol.GetComponent<Note>();
 
             switch(note.noteEnum)
             {
                 case NoteManager.NoteEnum.DC:
-
+                    NoteManager.RemoveNote(perfectCol.gameObject);
+                    ComboManager.ComboUp();
                     break;
                 case NoteManager.NoteEnum.Single:
+                    
+                    if(InputManager.instance.IsSpaceDown)
+                    {
+                        Debug.Log("Space");
+                        NoteManager.RemoveNote(perfectCol.gameObject);
+                    }
 
                     break;
                 case NoteManager.NoteEnum.Long:
 
+
+
                     break;
             }
-
-            NoteManager.RemoveNote(col.gameObject);
         }
     }
 

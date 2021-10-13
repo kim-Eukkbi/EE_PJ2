@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1068599730057358092}
   - component: {fileID: 1068599730057358093}
-  - component: {fileID: 4929676520811532563}
   - component: {fileID: 6405170410336114193}
+  - component: {fileID: -5238280494288984698}
   m_Layer: 6
   m_Name: SingleNote
   m_TagString: Untagged
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.1514774, g: 0.49264276, b: 0.8679245, a: 1}
   m_FlipX: 0
@@ -84,22 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4929676520811532563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1068599730057358095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b03e125d2a0b78c4284468e08ae3f31d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  noteEnum: 0
-  angle: 0
-  time: 0
-  length: 0
 --- !u!61 &6405170410336114193
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -126,3 +110,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-5238280494288984698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068599730057358095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a13430527019047843b8b33f3f9a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noteEnum: 1
+  angle: 0
+  time: 0
+  length: 0
