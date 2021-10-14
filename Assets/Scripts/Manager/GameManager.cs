@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class GameManager : MonoBehaviour
     public GameObject rootObject;
     public GameObject circle;
     public GameObject judgeLine;
-    
+
+    public Text timeText;
+
     public float currentTime = 0;
 
     private void Awake()
@@ -24,5 +27,6 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
+        timeText.text = "Time : " + ((int)currentTime).ToString();
     }
 }

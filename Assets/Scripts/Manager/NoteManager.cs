@@ -11,11 +11,8 @@ public class NoteManager : MonoBehaviour
     public GameObject longNotePrefab;
     public Transform parent;
 
-    public float spawnTime = 0.2f;
-    public float currentAngle = 90;
     public float noteSpeed = 1;
-    public float rotationSpeed = 1;
-    public float length = 5;
+    public float noteLength = 5;
 
     private List<Note> notes;
     private int count = 0;
@@ -45,48 +42,39 @@ public class NoteManager : MonoBehaviour
 
     private void Start()
     {
-        PoolManager.CreatePool<DCNote>(dcNotePrefab, parent, 30);
-        PoolManager.CreatePool<SingleNote>(singleNotePrefab, parent, 30);
-        PoolManager.CreatePool<LongNote>(longNotePrefab, parent, 30);
+        // 각각의 노트들의 풀 만들기
+        PoolManager.CreatePool<DCNote>(dcNotePrefab, parent, 50);
+        PoolManager.CreatePool<SingleNote>(singleNotePrefab, parent, 50);
+        PoolManager.CreatePool<LongNote>(longNotePrefab, parent, 50);
+
+        SetNotePattern();
     }
 
-    float current = 0;
-    bool isClick = false;
     private void Update()
     {
-        if (GameManager.instance.currentTime < 2f) return;
+        if (GameManager.instance.currentTime < 2f) return; // 시작하면 2초 대기 시간
 
-        if (GameManager.instance.currentTime > current + 2)
-        {
-            if(count % 5 == 0)
-            {
-                isClick = true;
-            }
-            else if(isClick)
-            {
-                isClick = false;
-                CreateNote(NoteEnum.Single, currentAngle, 30);
-            }
-            else
-            {
-                CreateNote(NoteEnum.Long, currentAngle, 30);
-            }
-            //if (count % 5 == 0)
-            //{
-            //    CreateNote(NoteEnum.Single, currentAngle, 30);
-            //}
-            //else
-            //{
-            //    CreateNote(NoteEnum.DC, currentAngle, 30);
-            //}
-            current += spawnTime;
-            currentAngle += 1.5f * rotationSpeed;
-            count++;
-        }
+        NoteTimeCheck();
 
         NoteMove();
     }
 
+    // 노트의 시간과 지금 시간을 비교하며 조건에 맞을 경우 생성하는 함수
+    private void NoteTimeCheck()
+    {
+        if (notes.Count == count) return;
+
+        Debug.Log(notes[count].time);
+        if (notes[count].time <= GameManager.instance.currentTime)
+        {
+            notes[count].gameObject.SetActive(true);
+            Debug.Log("init");
+            Debug.Log(notes[count].gameObject.name);
+            count++;
+        }
+    }
+
+    // 활성화 되어있는 노트를 원으로 이동 시키는 함수
     private void NoteMove()
     {
         for (int i = 0; i < notes.Count; i++)
@@ -96,8 +84,15 @@ public class NoteManager : MonoBehaviour
         }
     }
 
-    // 노트 생성
-    public static void CreateNote(NoteEnum noteEnum, float angle, float time)
+    // SetNote 함수를 통해 노트의 패턴을 생성하는 함수
+    private void SetNotePattern()
+    {
+        SetNote(NoteEnum.DC, 60, 4);
+        SetNote(NoteEnum.DC, 120, 4);
+    }
+
+    // 노트를 언제 어디서 생성할지의 정보를 notes에 넣어주는 함수
+    public static void SetNote(NoteEnum noteEnum, float angle, float time)
     {
         Note note = null;
 
@@ -130,13 +125,13 @@ public class NoteManager : MonoBehaviour
         float cos = Mathf.Cos((90 - angle) * Mathf.Deg2Rad);
         float sin = Mathf.Sin((90 - angle) * Mathf.Deg2Rad);
 
-        note.transform.position = new Vector2(sin, cos) * instance.length;
+        note.transform.position = new Vector2(sin, cos) * instance.noteLength;
     }
 
     public static void RemoveNote(GameObject removeNote)
     {
         removeNote.SetActive(false);
-        removeNote.transform.position = new Vector3(0, 1000, 0); // 오류 방지용으로 오브젝트를 올려줌
+        removeNote.transform.position = new Vector3(0, 1000, 0); // 오류 방지 코드
 
         Note note = instance.notes.Find(i => !i.gameObject.activeSelf);
         instance.notes.Remove(note);

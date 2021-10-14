@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+// 제네릭을 이용해서 많은 상황에 사용할 수 있도록 하였슴
 public class PoolManager
 {
     // Key : 문자열, Value : ObjectPool

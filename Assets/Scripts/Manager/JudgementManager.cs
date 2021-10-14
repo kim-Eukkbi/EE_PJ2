@@ -9,38 +9,39 @@ public class JudgementManager : MonoBehaviour
     public LayerMask whatIsDCNote;
     public LayerMask whatIsSingleNote;
     public LayerMask whatIsLongNote;
-    public Text judgementText;
-
-    private Vector3 perfectJudgementSize;
-    private Vector3 greatJudgementSize;
-    private Vector3 missJudgementSize;
 
     public float perfectSize = 1;
     public float greatSize = 2;
     public float missSize = 4;
 
+    private Vector3 perfectJudgementSize;
+    private Vector3 greatJudgementSize;
+    private Vector3 missJudgementSize;
+
     private void Update()
     {
+        // perfect 판정 범위
         perfectJudgementSize = new Vector3(1, perfectSize, 1) * 
                         GameManager.instance.rootObject.transform.localScale.x * 
                         GameManager.instance.circle.transform.localScale.x;
-
+        // great 판정 범위
         greatJudgementSize = new Vector3(1, greatSize, 1) *
                         GameManager.instance.rootObject.transform.localScale.x *
                         GameManager.instance.circle.transform.localScale.x;
-
+        // miss 판정 범위
         missJudgementSize = new Vector3(1, missSize, 1) *
                         GameManager.instance.rootObject.transform.localScale.x *
                         GameManager.instance.circle.transform.localScale.x;
 
         OutNoteCheck();
-        
+
         // 1프레임 당 한개의 노트만 체크하기
+        // 우선 순위 : single > long > dc
         if (NoteJudgementCheck(InputManager.instance.IsSpaceDown, InputManager.instance.IsSpaceDown, InputManager.instance.IsSpaceDown, whatIsSingleNote))
         {
             return;
         }
-        else if(NoteJudgementCheck((InputManager.instance.IsSpace || InputManager.instance.IsSpaceDown), InputManager.instance.IsSpaceDown, InputManager.instance.IsSpaceDown, whatIsLongNote))
+        else if (NoteJudgementCheck((InputManager.instance.IsSpace || InputManager.instance.IsSpaceDown), InputManager.instance.IsSpaceDown, InputManager.instance.IsSpaceDown, whatIsLongNote))
         {
             return;
         }
@@ -51,7 +52,7 @@ public class JudgementManager : MonoBehaviour
     {
         Collider2D col = Physics2D.OverlapCircle(GameManager.instance.circle.transform.position,
                                           GameManager.instance.circle.transform.lossyScale.x * 0.5f,
-                                          whatIsSingleNote);
+                                          whatIsSingleNote | whatIsDCNote | whatIsLongNote);
 
         if (col != null)
         {
@@ -59,7 +60,8 @@ public class JudgementManager : MonoBehaviour
         }
     }
 
-    private bool NoteJudgementCheck(bool perfect, bool great, bool miss, LayerMask noteEnum)
+    // perfect, great, miss 판정 검사 함수
+    private bool NoteJudgementCheck(bool perfect, bool great, bool miss, LayerMask noteEnum) 
     {
         Collider2D perfectCol = Physics2D.OverlapBox(GameManager.instance.judgeLine.transform.position,
                                                 perfectJudgementSize,

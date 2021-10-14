@@ -30,12 +30,9 @@ public class ObjectPool<T> : IPool where T : MonoBehaviour
         if (t == null) // 만약 find 해서 찾은게 없을 경우 새로 만든다
         {
             GameObject temp = GameObject.Instantiate(prefab, parent);
+            temp.SetActive(false);
             t = temp.GetComponent<T>();
             m_list.Add(t);
-        }
-        else
-        {
-            t.gameObject.SetActive(true);
         }
 
         return t;
