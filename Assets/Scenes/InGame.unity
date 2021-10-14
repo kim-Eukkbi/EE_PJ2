@@ -188,12 +188,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dcNotePrefab: {fileID: 8650336477040430435, guid: 7b6c3361a694bfa468de18f55946b507, type: 3}
   singleNotePrefab: {fileID: 1068599730057358095, guid: c40ba2fd93f388b4fa4a9a0f11949466, type: 3}
-  longNotePrefab: {fileID: 4650627594462077705, guid: 2db3b8bf16d3fc44e8c2bdc8f854140e, type: 3}
+  longNotePrefab: {fileID: 2008082465676115543, guid: 2db3b8bf16d3fc44e8c2bdc8f854140e, type: 3}
   parent: {fileID: 850926111}
-  spawnTime: 0.08
+  spawnTime: 0.1
   currentAngle: 90
-  noteSpeed: 6
-  rotationSpeed: 0
+  noteSpeed: 4
+  rotationSpeed: 3
   length: 10
 --- !u!114 &31231682
 MonoBehaviour:
@@ -207,11 +207,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3643c9e7875b542a367974d2b87623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestObj: {fileID: 0}
-  whatIsNote:
+  whatIsDCNote:
     serializedVersion: 2
-    m_Bits: 64
-  verticalSize: 1
+    m_Bits: 128
+  whatIsSingleNote:
+    serializedVersion: 2
+    m_Bits: 256
+  whatIsLongNote:
+    serializedVersion: 2
+    m_Bits: 512
+  judgementText: {fileID: 0}
+  perfectSize: 1
+  greatSize: 2
+  missSize: 4
 --- !u!114 &31231683
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -51,20 +51,34 @@ public class NoteManager : MonoBehaviour
     }
 
     float current = 0;
+    bool isClick = false;
     private void Update()
     {
         if (GameManager.instance.currentTime < 2f) return;
 
         if (GameManager.instance.currentTime > current + 2)
         {
-            if (count % 5 == 0)
+            if(count % 5 == 0)
             {
+                isClick = true;
+            }
+            else if(isClick)
+            {
+                isClick = false;
                 CreateNote(NoteEnum.Single, currentAngle, 30);
             }
             else
             {
-                CreateNote(NoteEnum.DC, currentAngle, 30);
+                CreateNote(NoteEnum.Long, currentAngle, 30);
             }
+            //if (count % 5 == 0)
+            //{
+            //    CreateNote(NoteEnum.Single, currentAngle, 30);
+            //}
+            //else
+            //{
+            //    CreateNote(NoteEnum.DC, currentAngle, 30);
+            //}
             current += spawnTime;
             currentAngle += 1.5f * rotationSpeed;
             count++;
@@ -83,7 +97,7 @@ public class NoteManager : MonoBehaviour
     }
 
     // 노트 생성
-    public static void CreateNote(NoteEnum noteEnum, float angle, float time, float length = 0)
+    public static void CreateNote(NoteEnum noteEnum, float angle, float time)
     {
         Note note = null;
 
@@ -110,7 +124,6 @@ public class NoteManager : MonoBehaviour
         note.noteEnum = noteEnum;
         note.angle = angle;
         note.time = time;
-        note.length = length;
 
         note.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 

@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     public static InputManager instance;
 
     public bool IsSpaceDown { get; set; }
+    public bool IsSpace { get; set; }
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        IsSpaceDown = Input.GetKeyDown(KeyCode.Space);
+        IsSpaceDown = Input.GetKeyDown(KeyCode.D);
+        IsSpace = Input.GetKey(KeyCode.D);
     }
 }
