@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    public NoteManager.NoteEnum noteEnum;
     public float angle;
     public float time;
+    public NoteManager.NoteEnum noteEnum;
+    public bool haveGameObj;
 }

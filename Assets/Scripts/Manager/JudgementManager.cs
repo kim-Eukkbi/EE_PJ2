@@ -21,11 +21,11 @@ public class JudgementManager : MonoBehaviour
     private void Update()
     {
         // perfect 판정 범위
-        perfectJudgementSize = new Vector3(1, perfectSize, 1) * 
+        perfectJudgementSize = new Vector3(1, perfectSize * NoteManager.instance.noteSpeed, 1) * 
                         GameManager.instance.rootObject.transform.localScale.x * 
                         GameManager.instance.circle.transform.localScale.x;
         // great 판정 범위
-        greatJudgementSize = new Vector3(1, greatSize, 1) *
+        greatJudgementSize = new Vector3(1, greatSize * NoteManager.instance.noteSpeed, 1) *
                         GameManager.instance.rootObject.transform.localScale.x *
                         GameManager.instance.circle.transform.localScale.x;
         // miss 판정 범위
@@ -37,18 +37,25 @@ public class JudgementManager : MonoBehaviour
 
         // 1프레임 당 한개의 노트만 체크하기
         // 우선 순위 : single > long > dc
-        if (NoteJudgementCheck(InputManager.instance.IsSpaceDown, InputManager.instance.IsSpaceDown, InputManager.instance.IsSpaceDown, whatIsSingleNote))
+        if (NoteJudgementCheck(InputManager.instance.IsSpaceDown,
+                                InputManager.instance.IsSpaceDown, 
+                                InputManager.instance.IsSpaceDown, 
+                                whatIsSingleNote))
         {
             return;
         }
-        else if (NoteJudgementCheck((InputManager.instance.IsSpace || InputManager.instance.IsSpaceDown), InputManager.instance.IsSpaceDown, InputManager.instance.IsSpaceDown, whatIsLongNote))
+        else if (NoteJudgementCheck((InputManager.instance.IsSpace || InputManager.instance.IsSpaceDown), 
+                                    InputManager.instance.IsSpaceDown, 
+                                    InputManager.instance.IsSpaceDown, 
+                                    whatIsLongNote))
         {
             return;
         }
         NoteJudgementCheck(true, false, false, whatIsDCNote);
     }
 
-    private void OutNoteCheck() // 노트를 놓쳤을 때
+    // 노트를 놓쳤을 때
+    private void OutNoteCheck() 
     {
         Collider2D col = Physics2D.OverlapCircle(GameManager.instance.circle.transform.position,
                                           GameManager.instance.circle.transform.lossyScale.x * 0.5f,
@@ -59,6 +66,8 @@ public class JudgementManager : MonoBehaviour
             Miss(col.gameObject.GetComponent<Note>());
         }
     }
+
+    float currentTime = 0;
 
     // perfect, great, miss 판정 검사 함수
     private bool NoteJudgementCheck(bool perfect, bool great, bool miss, LayerMask noteEnum) 
@@ -81,8 +90,8 @@ public class JudgementManager : MonoBehaviour
         if (perfectCol != null && perfect)
         {
             Note note = perfectCol.gameObject.GetComponent<Note>();
-
             Perfect(note);
+
             return true;
         }
         else if (greatCol != null && great)
@@ -105,19 +114,19 @@ public class JudgementManager : MonoBehaviour
 
     private void Perfect(Note note)
     {
-        NoteManager.RemoveNote(note.gameObject);
+        NoteManager.RemoveNote(note);
         ComboManager.ComboUp();
     }
 
     private void Great(Note note)
     {
-        NoteManager.RemoveNote(note.gameObject);
+        NoteManager.RemoveNote(note);
         ComboManager.ComboUp();
     }
 
     private void Miss(Note note)
     {
-        NoteManager.RemoveNote(note.gameObject);
+        NoteManager.RemoveNote(note);
         ComboManager.ComboReset();
     }
 
@@ -156,3 +165,18 @@ public class JudgementManager : MonoBehaviour
         Gizmos.DrawWireMesh(m2, pos, GameManager.instance.circle.transform.rotation, size);
     }
 }
+
+// 나중에 쓸 코드 저장소
+//currentTime += Time.deltaTime;
+
+//float dis = Vector3.Distance(greatCol.transform.position, GameManager.instance.judgeLine.transform.position);
+
+//if (Mathf.Abs(dis) < 0.05f)
+//{
+//    Debug.Log("currentTime : " + currentTime + "ms");
+//    currentTime = 0;
+
+//    Note note2 = greatCol.gameObject.GetComponent<Note>();
+
+//    Perfect(note2);
+//}

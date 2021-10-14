@@ -192,7 +192,7 @@ MonoBehaviour:
   longNotePrefab: {fileID: 2008082465676115543, guid: 2db3b8bf16d3fc44e8c2bdc8f854140e, type: 3}
   parent: {fileID: 850926111}
   noteSpeed: 4
-  noteLength: 5
+  noteLength: 10
 --- !u!114 &31231682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,8 +214,8 @@ MonoBehaviour:
   whatIsLongNote:
     serializedVersion: 2
     m_Bits: 512
-  perfectSize: 1
-  greatSize: 2
+  perfectSize: 0.125
+  greatSize: 0.2125
   missSize: 4
 --- !u!114 &31231683
 MonoBehaviour:
