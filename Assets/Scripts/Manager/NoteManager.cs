@@ -71,11 +71,10 @@ public class NoteManager : MonoBehaviour
     // SetNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
     private void SetNotePattern()
     {
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 10; i++)
         {
-            SetNote(NoteEnum.DC, 0, i * 0.1f);
+            SetNote(NoteEnum.DC, i * 100, i * 0.1f);
         }
-
     }
     // 노트를 언제 어디서 생성할지의 정보를 notes에 넣어주는 함수
     public static void SetNote(NoteEnum noteEnum, float angle, float time)
@@ -103,6 +102,12 @@ public class NoteManager : MonoBehaviour
         note.transform.position = note.transform.up * instance.noteSpeed * (time);
         note.transform.position += note.transform.up * 
                                 (GameManager.instance.judgeLine.transform.position.y + GameManager.instance.judgeLine.transform.localScale.y);
+
+        //string json = JsonUtility.ToJson(note);
+
+        //Debug.Log("json : " + json);
+
+        //Debug.Log(JsonUtility.FromJson<NoteVO>(json).noteEnum);
 
         instance.notes.Add(note);
     }
