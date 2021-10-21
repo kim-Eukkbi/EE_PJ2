@@ -15,7 +15,6 @@ public class NoteManager : MonoBehaviour
     public float noteLength = 5;
 
     private List<Note> notes;
-    private int count = 0;
 
     /// <summary>
     /// DC == DontClick,
@@ -54,7 +53,11 @@ public class NoteManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.waitTime > 0f) return; // 시작하면 2초 대기 시간
+        if (!GameManager.instance.isGameStart)
+        {
+            SetNoteTimePosition();
+            return;
+        }
 
         NoteMove();
     }
@@ -71,13 +74,37 @@ public class NoteManager : MonoBehaviour
     // SetNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
     private void SetNotePattern()
     {
-        for(int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
-            SetNote(NoteEnum.DC, i * 100, i * 0.1f);
+            SetNote(NoteEnum.Single, i * 30, 3 + i * 0.3f);
         }
     }
+
+    public void SetNoteTimePosition()
+    {
+        for(int i = 0; i < notes.Count; i++)
+        {
+            if (notes[i].time < AudioManager.instance.musicCurrentTime)
+            {
+                notes[i].gameObject.SetActive(false);
+                continue;
+            }
+            else
+            {
+                notes[i].gameObject.SetActive(true);
+            }
+
+            notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time);
+            notes[i].transform.position += notes[i].transform.up *
+                                    (0.8f + GameManager.instance.judgeLine.transform.localScale.y);
+            notes[i].transform.position -= notes[i].transform.up * instance.noteSpeed * AudioManager.instance.musicCurrentTime;
+        
+        
+        }
+    }
+
     // 노트를 언제 어디서 생성할지의 정보를 notes에 넣어주는 함수
-    public static void SetNote(NoteEnum noteEnum, float angle, float time)
+    public void SetNote(NoteEnum noteEnum, float angle, float time)
     {
         Note note = null;
 
@@ -112,16 +139,24 @@ public class NoteManager : MonoBehaviour
         instance.notes.Add(note);
     }
 
-    public static void RemoveNote(Note removeNote)
+    public void RemoveNote(Note removeNote)
     {
         removeNote.gameObject.SetActive(false);
         removeNote.transform.position = new Vector3(0, 1000, 0); // 오류 방지 코드
 
         instance.notes.Remove(removeNote);
-        //Debug.Log("bool : " + instance.notes.Remove(removeNote)); // 절대 지우면 안되는 코드
-        //Debug.Log("note Time : " + removeNote.time);
-        //Debug.Log("gameManager Time : " + GameManager.instance.currentTime);
+    }
 
-        instance.count--;
+    public void NotesReset()
+    {
+        for(int i = 0; i < instance.notes.Count; i++)
+        {
+            instance.notes[i].gameObject.SetActive(false);
+            instance.notes[i].transform.position = new Vector3(0, 1000, 0);
+            instance.RemoveNote(instance.notes[i]);
+            i--;
+        }
+
+        instance.SetNotePattern();
     }
 }

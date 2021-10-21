@@ -7,7 +7,7 @@ public class ComboManager : MonoBehaviour
 {
     public Text comboText;
 
-    private static ComboManager instance;
+    public static ComboManager instance;
 
     private void Awake()
     {
@@ -17,14 +17,14 @@ public class ComboManager : MonoBehaviour
     private int combo = 0;
 
     // ÄÞº¸ 1 »ó½Â
-    public static void ComboUp()
+    public void ComboUp()
     {
         instance.combo++;
         instance.comboText.text = "Combo : " + instance.combo.ToString();
     }
 
     // ÄÞº¸ 0À¸·Î ÃÊ±âÈ­
-    public static void ComboReset()
+    public void ComboReset()
     {
         instance.combo = 0;
         instance.comboText.text = "Combo : " + instance.combo.ToString();

@@ -20,13 +20,15 @@ public class JudgementManager : MonoBehaviour
 
     private void Update()
     {
-        perfectJudgementSize = new Vector3(1, perfectSize * NoteManager.instance.noteSpeed, 1) *
+        if (!GameManager.instance.isGameStart) return;
+
+        perfectJudgementSize = new Vector3(GameManager.instance.judgeLine.transform.localScale.x, perfectSize * NoteManager.instance.noteSpeed, 1) *
                         GameManager.instance.rootObject.transform.localScale.x *
                         GameManager.instance.circle.transform.localScale.x;
-        greatJudgementSize = new Vector3(1, greatSize * NoteManager.instance.noteSpeed, 1) *
+        greatJudgementSize = new Vector3(GameManager.instance.judgeLine.transform.localScale.x, greatSize * NoteManager.instance.noteSpeed, 1) *
                         GameManager.instance.rootObject.transform.localScale.x *
                         GameManager.instance.circle.transform.localScale.x;
-        missJudgementSize = new Vector3(1, missSize * NoteManager.instance.noteSpeed, 1) *
+        missJudgementSize = new Vector3(GameManager.instance.judgeLine.transform.localScale.x, missSize * NoteManager.instance.noteSpeed, 1) *
                         GameManager.instance.rootObject.transform.localScale.x *
                         GameManager.instance.circle.transform.localScale.x;
 
@@ -86,7 +88,6 @@ public class JudgementManager : MonoBehaviour
         {
             Perfect(note);
 
-            Debug.Log(judgementTime + " - Perfect");
             return true;
         }
         else if (great && judgementTime < greatSize)
@@ -107,25 +108,26 @@ public class JudgementManager : MonoBehaviour
 
     private void Perfect(Note note)
     {
-        NoteManager.RemoveNote(note);
-        ComboManager.ComboUp();
+        NoteManager.instance.RemoveNote(note);
+        ComboManager.instance.ComboUp();
     }
 
     private void Great(Note note)
     {
-        NoteManager.RemoveNote(note);
-        ComboManager.ComboUp();
+        NoteManager.instance.RemoveNote(note);
+        ComboManager.instance.ComboUp();
     }
 
     private void Miss(Note note)
     {
-        NoteManager.RemoveNote(note);
-        ComboManager.ComboReset();
+        NoteManager.instance.RemoveNote(note);
+        ComboManager.instance.ComboReset();
         //ComboManager.ComboUp();
     }
 
     private void OnDrawGizmos()
     {
+        // NullReferenceException 오류가 난다면 그건 유니티 오류에요 매우 정상입니다
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere(GameManager.instance.circle.transform.position, GameManager.instance.circle.transform.lossyScale.x * 0.5f);
 

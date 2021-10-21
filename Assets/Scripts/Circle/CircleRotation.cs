@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CircleRotation : MonoBehaviour
 {
-    public GameObject testObj; // 마우스 커서 값이 잘 들어가는지 검사하는 오브젝트
-
     private void Update()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
