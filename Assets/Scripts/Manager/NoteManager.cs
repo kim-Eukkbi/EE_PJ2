@@ -24,9 +24,9 @@ public class NoteManager : MonoBehaviour
     /// </summary>
     public enum NoteEnum
     {
-        DC,
-        Single,
-        Long
+        DC = 7,
+        Single = 8,
+        Long = 9
     }
 
     private void Awake()
@@ -50,50 +50,13 @@ public class NoteManager : MonoBehaviour
         SetNotePattern();
 
         notes.Sort((x, y) => x.time.CompareTo(y.time));
-
-        //for (int i = 0; i < notes.Count; i++)
-        //{
-        //    Debug.Log(notes[i].time);
-        //}
     }
 
     private void Update()
     {
-        if (GameManager.instance.currentTime < 2f) return; // 시작하면 2초 대기 시간
-
-        NoteSpawn();
+        if (GameManager.instance.waitTime > 0f) return; // 시작하면 2초 대기 시간
 
         NoteMove();
-    }
-
-    // 노트의 시간과 지금 시간을 비교하며 조건에 맞을 경우 노트를 생성하는 함수
-    private void NoteSpawn()
-    {
-        if (notes.Count == count) return; // 예외처리
-
-        if (notes[count].time <= GameManager.instance.currentTime)
-        {
-            if (notes[count].haveGameObj) return;
-
-            Note note = GetNote(notes[count].noteEnum);
-
-            note.angle = notes[count].angle;
-            note.time = notes[count].time;
-            note.haveGameObj = true;
-
-            note.transform.rotation = Quaternion.Euler(new Vector3(0, 0, note.angle - 90));
-
-            float cos = Mathf.Cos((90 - note.angle) * Mathf.Deg2Rad);
-            float sin = Mathf.Sin((90 - note.angle) * Mathf.Deg2Rad);
-
-            note.transform.position = new Vector2(sin, cos) * noteLength;
-
-            notes[count] = note;
-
-            count++;
-
-            NoteSpawn(); // 같은 시간에 노트가 나올 수 있으니 함수를 한번더 호출
-        }
     }
 
     // 활성화 되어있는 노트를 원으로 이동 시키는 함수
@@ -101,49 +64,21 @@ public class NoteManager : MonoBehaviour
     {
         for (int i = 0; i < notes.Count; i++)
         {
-            if(notes[i].haveGameObj)
-            {
-                Vector3 dir = (GameManager.instance.circle.transform.position - notes[i].transform.position).normalized;
-                notes[i].transform.position += dir * Time.deltaTime * noteSpeed;
-            }
+            notes[i].transform.position += (notes[i].transform.up * -1) * Time.deltaTime * noteSpeed;
         }
     }
 
     // SetNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
     private void SetNotePattern()
     {
-        for(int i = 0; i < 1000; i++)
+        for(int i = 0; i < 100; i++)
         {
-            SetNote(NoteEnum.Single, 0, 2 + (i * 0.5f));
+            SetNote(NoteEnum.DC, 0, i * 0.1f);
         }
 
     }
     // 노트를 언제 어디서 생성할지의 정보를 notes에 넣어주는 함수
     public static void SetNote(NoteEnum noteEnum, float angle, float time)
-    {
-        Note note = new Note();
-
-        note.noteEnum = noteEnum;
-        note.angle = angle;
-        note.time = time;
-        note.haveGameObj = false;
-
-        instance.notes.Add(note);
-    }
-
-    public static void RemoveNote(Note removeNote)
-    {
-        removeNote.gameObject.SetActive(false);
-        removeNote.transform.position = new Vector3(0, 1000, 0); // 오류 방지 코드
-
-        removeNote.haveGameObj = false;
-
-        Debug.Log("bool : " + instance.notes.Remove(removeNote)); // 절대 지우면 안되는 코드
-
-        instance.count--;
-    }
-
-    private Note GetNote(NoteEnum noteEnum)
     {
         Note note = null;
 
@@ -160,13 +95,28 @@ public class NoteManager : MonoBehaviour
                 break;
         }
 
-        if (note == null)
-        {
-            Debug.LogError("정해진 종류 이외의 노트를 선택하였습니다");
-        }
+        note.noteEnum = noteEnum;
+        note.angle = angle;
+        note.time = time;
 
-        note.gameObject.SetActive(true);
+        note.transform.rotation = Quaternion.Euler(0, 0, angle);
+        note.transform.position = note.transform.up * instance.noteSpeed * (time);
+        note.transform.position += note.transform.up * 
+                                (GameManager.instance.judgeLine.transform.position.y + GameManager.instance.judgeLine.transform.localScale.y);
 
-        return note;
+        instance.notes.Add(note);
+    }
+
+    public static void RemoveNote(Note removeNote)
+    {
+        removeNote.gameObject.SetActive(false);
+        removeNote.transform.position = new Vector3(0, 1000, 0); // 오류 방지 코드
+
+        instance.notes.Remove(removeNote);
+        //Debug.Log("bool : " + instance.notes.Remove(removeNote)); // 절대 지우면 안되는 코드
+        //Debug.Log("note Time : " + removeNote.time);
+        //Debug.Log("gameManager Time : " + GameManager.instance.currentTime);
+
+        instance.count--;
     }
 }

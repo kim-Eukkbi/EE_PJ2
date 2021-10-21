@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112e38978dbf68e4799bf6b2c9cd6fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteEnum: 0
   angle: 0
   time: 0
-  length: 0
+  noteEnum: 7
+  haveGameObj: 0

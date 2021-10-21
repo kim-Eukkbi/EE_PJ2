@@ -20,7 +20,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        IsSpaceDown = Input.GetKeyDown(KeyCode.D);
+        IsSpaceDown = Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.V);
         IsSpace = Input.GetKey(KeyCode.D);
     }
 }

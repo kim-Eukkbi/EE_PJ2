@@ -175,6 +175,7 @@ MonoBehaviour:
   judgeLine: {fileID: 117407549}
   timeText: {fileID: 1565409557}
   currentTime: 0
+  waitTime: 2
 --- !u!114 &31231681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +192,7 @@ MonoBehaviour:
   singleNotePrefab: {fileID: 1068599730057358095, guid: c40ba2fd93f388b4fa4a9a0f11949466, type: 3}
   longNotePrefab: {fileID: 2008082465676115543, guid: 2db3b8bf16d3fc44e8c2bdc8f854140e, type: 3}
   parent: {fileID: 850926111}
-  noteSpeed: 4
+  noteSpeed: 2
   noteLength: 10
 --- !u!114 &31231682
 MonoBehaviour:
@@ -216,7 +217,7 @@ MonoBehaviour:
     m_Bits: 512
   perfectSize: 0.125
   greatSize: 0.2125
-  missSize: 4
+  missSize: 0.5
 --- !u!114 &31231683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,7 +723,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 150}
+  m_SizeDelta: {x: 700, y: 150}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &833337619
 MonoBehaviour:
@@ -948,7 +949,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 300, y: 150}
+  m_SizeDelta: {x: 700, y: 150}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1565409556
 MonoBehaviour:

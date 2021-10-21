@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public float currentTime = 0;
 
+    public float waitTime = 2;
+
     private void Awake()
     {
         if(instance != null)
@@ -26,7 +28,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (waitTime > 0f)
+        {
+            waitTime -= Time.deltaTime;
+            return;
+        }
         currentTime += Time.deltaTime;
-        timeText.text = "Time : " + ((int)currentTime).ToString();
+        timeText.text = "Time : " + currentTime.ToString("0.00000");
     }
 }
