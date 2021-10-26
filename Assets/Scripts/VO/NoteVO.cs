@@ -10,3 +10,10 @@ public class NoteVO // Note 클래스는 이미 MonoBehaviour를 상속 받고 PoolManager�
     public float time;
     public NoteManager.NoteEnum noteEnum;
 }
+
+[Serializable]
+public class NoteVOList
+{
+    public List<NoteVO> notes;
+    //public NoteVO[] notes;
+}

@@ -12,7 +12,7 @@ public class NoteManager : MonoBehaviour
     public Transform parent;
 
     public float noteSpeed = 1;
-    public float noteLength = 5;
+    public float noteRenderLength = 10f;
 
     private List<Note> notes;
 
@@ -67,24 +67,48 @@ public class NoteManager : MonoBehaviour
     {
         for (int i = 0; i < notes.Count; i++)
         {
-            notes[i].transform.position += (notes[i].transform.up * -1) * Time.deltaTime * noteSpeed;
+            // 원에 노트가 닿지않았고, 노트의 최대 렌더거리보다 안쪽에 있다면 그 노트는 활성화
+            if (!(notes[i].time < AudioManager.instance.musicCurrentTime || !(notes[i].time < AudioManager.instance.musicCurrentTime + noteRenderLength)))
+            {
+                notes[i].gameObject.SetActive(true);
+            }
+            else if(!notes[i].gameObject.activeSelf) // 활성화 되어 있지 않은 경우는 계산하지 않음
+            {
+                continue;
+            }
+
+            Debug.Log(notes[i].time);
+
+            // 노트의 시간 - 지금 시간을 빼서 그에 따른 위치에 이동시킨다
+            notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time - AudioManager.instance.musicCurrentTime);
+            notes[i].transform.position += notes[i].transform.up *
+                                    (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
         }
     }
 
-    // SetNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
+    // SetSpawnNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
     private void SetNotePattern()
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1000; i++)
         {
-            SetNote(NoteEnum.Single, i * 30, 3 + i * 0.3f);
+            if(i % 3 == 0)
+            {
+                SetSpawnNote(NoteEnum.DC, 5 + (i * 2), 3 + i * 0.5f);
+            }
+            else if(i % 3 == 1)
+            {
+                SetSpawnNote(NoteEnum.Single, 5 + (i * 2), 3 + i * 0.5f);
+            }
         }
     }
 
+    // 지금 진행되는 시간에 맞춰 노트들을 이동시키는 함수
     public void SetNoteTimePosition()
     {
         for(int i = 0; i < notes.Count; i++)
         {
-            if (notes[i].time < AudioManager.instance.musicCurrentTime)
+            // 원에 노트가 닿거나, 노트의 최대 렌더거리보다 멀리있다면 그 노트는 비활성화
+            if (notes[i].time < AudioManager.instance.musicCurrentTime || !(notes[i].time < AudioManager.instance.musicCurrentTime + noteRenderLength))
             {
                 notes[i].gameObject.SetActive(false);
                 continue;
@@ -94,17 +118,14 @@ public class NoteManager : MonoBehaviour
                 notes[i].gameObject.SetActive(true);
             }
 
-            notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time);
+            notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time - AudioManager.instance.musicCurrentTime);
             notes[i].transform.position += notes[i].transform.up *
-                                    (0.8f + GameManager.instance.judgeLine.transform.localScale.y);
-            notes[i].transform.position -= notes[i].transform.up * instance.noteSpeed * AudioManager.instance.musicCurrentTime;
-        
-        
+                                    (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
         }
     }
 
     // 노트를 언제 어디서 생성할지의 정보를 notes에 넣어주는 함수
-    public void SetNote(NoteEnum noteEnum, float angle, float time)
+    public void SetSpawnNote(NoteEnum noteEnum, float angle, float time)
     {
         Note note = null;
 
@@ -122,23 +143,47 @@ public class NoteManager : MonoBehaviour
         }
 
         note.noteEnum = noteEnum;
-        note.angle = angle;
+        note.angle = angle % 360;
         note.time = time;
 
-        note.transform.rotation = Quaternion.Euler(0, 0, angle);
+        note.transform.rotation = Quaternion.Euler(0, 0, angle % 360);
         note.transform.position = note.transform.up * instance.noteSpeed * (time);
         note.transform.position += note.transform.up * 
-                                (GameManager.instance.judgeLine.transform.position.y + GameManager.instance.judgeLine.transform.localScale.y);
-
-        //string json = JsonUtility.ToJson(note);
-
-        //Debug.Log("json : " + json);
-
-        //Debug.Log(JsonUtility.FromJson<NoteVO>(json).noteEnum);
+                                (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
 
         instance.notes.Add(note);
     }
 
+    // notes리스트의 가장 뒤에있는 값을 리턴하는 함수
+    public Note GetBackNote()
+    {
+        return notes[notes.Count - 1];
+    }
+
+    // 받은 인수의 angle과 time에 알맞게 위치를 변경해주는 함수
+    public void SetNoteValue(Note note)
+    {
+        if (note == null) return;
+
+        Note findNote = notes.Find(x => x.time == note.time);
+
+        if(findNote != null)
+        {
+            note.transform.rotation = Quaternion.Euler(0, 0, note.angle);
+
+            note.transform.position = note.transform.up * instance.noteSpeed * (note.time - AudioManager.instance.musicCurrentTime);
+            note.transform.position += note.transform.up *
+                                    (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
+        }
+    }
+
+    // 받은 인수의 노트를 notes에다 추가해주는 함수
+    public void AddNote(Note addNote)
+    {
+        notes.Add(addNote);
+    }
+
+    // 받은 인수에 해당하는 노트를 지우는 함수
     public void RemoveNote(Note removeNote)
     {
         removeNote.gameObject.SetActive(false);
@@ -147,6 +192,7 @@ public class NoteManager : MonoBehaviour
         instance.notes.Remove(removeNote);
     }
 
+    // 게임안에 있는 노트들을 다시 처음으로 리셋시키는 함수
     public void NotesReset()
     {
         for(int i = 0; i < instance.notes.Count; i++)
@@ -158,5 +204,24 @@ public class NoteManager : MonoBehaviour
         }
 
         instance.SetNotePattern();
+    }
+
+    // notes에 있는 노트들의 정보를 json으로 변환해서 리턴해주는 함수
+    public string NotesToJson()
+    {
+        string json = "";
+
+        notes.Sort((x, y) => x.time.CompareTo(y.time));
+
+        json += "\"notes\":[";
+
+        for(int i = 0; i < notes.Count; i++)
+        {
+            json += JsonUtility.ToJson(notes[i]) + (i == notes.Count - 1 ? "" : ", ");
+        }
+
+        json += "]";
+
+        return json;
     }
 }

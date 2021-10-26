@@ -11,8 +11,9 @@ public class GameManager : MonoBehaviour
     public GameObject circle;
     public GameObject judgeLine;
     public Text timeText;
+    public Text countDownText;
     public float currentTime = 0;
-    public float waitTime = 2;
+    public float countDownTime = 2;
     public float judgeLineY = 0f;
 
     public bool isGameStart = false;
@@ -27,14 +28,13 @@ public class GameManager : MonoBehaviour
         }
         instance = this;
 
-        waitTimeTemp = waitTime;
+        waitTimeTemp = countDownTime;
     }
 
     void Update()
     {
         if (!isGameStart)
         {
-            instance.waitTime -= Time.deltaTime;
             return;
         }
 
@@ -47,30 +47,40 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        StartCoroutine(GameStarting(waitTime));
+        StartCoroutine(GameStarting(countDownTime));
     }
 
+    // Start 버튼을 누른 뒤 카운트 다운을 하고
+    // 이후 시작하는 함수를 실행하는 코루틴
     private IEnumerator GameStarting(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime);
+        countDownText.gameObject.SetActive(true);
+
+        while (waitTime >= 0)
+        {
+            Debug.Log(waitTime);
+            countDownText.text = Mathf.FloorToInt(waitTime * 2).ToString();
+            waitTime -= Time.deltaTime * 2;
+            yield return null;
+        }
+
+        countDownText.gameObject.SetActive(false);
 
         isGameStart = true;
         AudioManager.instance.SetTimeAndStart();
         instance.currentTime = AudioManager.instance.musicCurrentTime;
         instance.timeText.text = "Time : " + instance.currentTime;
-
-        NoteManager.instance.SetNoteTimePosition();
     }
 
     public void GameReset()
     {
         isGameStart = false;
 
+        AudioManager.instance.MusicStop();
         NoteManager.instance.NotesReset();
         ComboManager.instance.ComboReset();
-        AudioManager.instance.MusicStop();
 
-        instance.waitTime = instance.waitTimeTemp;
+        instance.countDownTime = instance.waitTimeTemp;
         instance.currentTime = 0;
         instance.timeText.text = "Time : " + 0;
     }

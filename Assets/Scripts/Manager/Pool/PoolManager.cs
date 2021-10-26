@@ -34,4 +34,10 @@ public class PoolManager
         ObjectPool<T> pool = (ObjectPool<T>)poolDic[prefab.name];
         return pool.GetOrCreate();
     }
+
+    public static T GetCreateItem<T>(GameObject prefab) where T : MonoBehaviour
+    {
+        ObjectPool<T> pool = (ObjectPool<T>)poolDic[prefab.name];
+        return pool.Create();
+    }
 }

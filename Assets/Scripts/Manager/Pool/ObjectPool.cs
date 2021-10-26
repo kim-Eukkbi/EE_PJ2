@@ -41,4 +41,16 @@ public class ObjectPool<T> : IPool where T : MonoBehaviour
 
         return t;
     }
+
+    public T Create()
+    {
+        T t = null;
+
+        GameObject temp = GameObject.Instantiate(prefab, parent);
+        temp.gameObject.SetActive(true);
+        t = temp.GetComponent<T>();
+        m_list.Add(t);
+
+        return t;
+    }
 }

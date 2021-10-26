@@ -30,25 +30,33 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        musicCurrentTime = musicLength * scrollbar.value;
+        if(scrollbar != null)
+        {
+            musicCurrentTime = musicLength * scrollbar.value;
+        }
     }
 
+    // 지금 시간에 음악을 시작
     public void SetTimeAndStart()
     {
         audioSource.time = musicCurrentTime;
         audioSource.Play();
     }
 
+    // 음악 멈춰
     public void MusicStop()
     {
         audioSource.Stop();
     }
 
+    // 게임 진행 도중 음악이 끝이 나면 게임 리셋,
+    // 이외에는 스크롤 바를 음악 진행속도에 맞춰 이동
     public void SetScrollBar()
     {
         if(GameManager.instance.currentTime / musicLength >= 1f)
         {
             GameManager.instance.GameReset();
+            return;
         }
 
         scrollbar.value = GameManager.instance.currentTime / musicLength;
