@@ -14,6 +14,5 @@ public class NoteVO // Note 클래스는 이미 MonoBehaviour를 상속 받고 PoolManager�
 [Serializable]
 public class NoteVOList
 {
-    public List<NoteVO> notes;
-    //public NoteVO[] notes;
+    public NoteVO[] notes;
 }

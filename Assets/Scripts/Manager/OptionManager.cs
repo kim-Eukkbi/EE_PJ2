@@ -74,22 +74,37 @@ public class OptionManager : MonoBehaviour
         {
             noteAddButton.onClick.AddListener(() =>
             {
-                Note note = PoolManager.GetCreateItem<DCNote>(NoteManager.instance.dcNotePrefab);
+                SelectNoteManager.instance.SelectNote = null;
 
-                note.angle = 0;
-                note.time = GameManager.instance.countDownTime;
-                note.noteEnum = NoteManager.NoteEnum.DC;
+                SelectNoteManager.instance.SelectNote = PoolManager.GetCreateItem<DCNote>(NoteManager.instance.dcNotePrefab);
 
-                noteAngleIF.text = note.angle.ToString();
-                noteTimeIF.text = note.time.ToString();
+                SelectNoteManager.instance.SelectNote.angle = 0;
+                SelectNoteManager.instance.SelectNote.time = GameManager.instance.countDownTime;
+                SelectNoteManager.instance.SelectNote.noteEnum = NoteManager.NoteEnum.DC;
 
-                note.gameObject.SetActive(true);
+                noteAngleIF.text = SelectNoteManager.instance.SelectNote.angle.ToString();
+                noteTimeIF.text = SelectNoteManager.instance.SelectNote.time.ToString();
 
-                NoteManager.instance.AddNote(note);
+                SelectNoteManager.instance.SelectNote.gameObject.SetActive(true);
 
-                SelectNoteManager.instance.SelectNote = note;
+                NoteManager.instance.AddNote(SelectNoteManager.instance.SelectNote);
 
-                Debug.Log("ADDDDDDD NOOOOOOOTOTOTETETEEE");
+                //Note note = PoolManager.GetCreateItem<DCNote>(NoteManager.instance.dcNotePrefab);
+
+                //note.angle = 0;
+                //note.time = GameManager.instance.countDownTime;
+                //note.noteEnum = NoteManager.NoteEnum.DC;
+
+                //noteAngleIF.text = note.angle.ToString();
+                //noteTimeIF.text = note.time.ToString();
+
+                //note.gameObject.SetActive(true);
+
+                //NoteManager.instance.AddNote(note);
+
+                //SelectNoteManager.instance.SelectNote = note;
+
+                //Debug.Log("ADDDDDDD NOOOOOOOTOTOTETETEEE");
 
                 UISetActive(2);
             });

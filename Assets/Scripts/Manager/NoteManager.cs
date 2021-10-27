@@ -89,16 +89,10 @@ public class NoteManager : MonoBehaviour
     // SetSpawnNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
     private void SetNotePattern()
     {
-        for (int i = 0; i < 1000; i++)
+        for(int i = 0; i < 1000; i++)
         {
-            if(i % 3 == 0)
-            {
-                SetSpawnNote(NoteEnum.DC, 5 + (i * 2), 3 + i * 0.5f);
-            }
-            else if(i % 3 == 1)
-            {
-                SetSpawnNote(NoteEnum.Single, 5 + (i * 2), 3 + i * 0.5f);
-            }
+            //SetSpawnNote(NoteEnum.DC, i * 2, 2 + (i * 0.05f));
+            //SetSpawnNote(NoteEnum.DC, -i * 2, 2 + (i * 0.05f));
         }
     }
 
@@ -206,6 +200,23 @@ public class NoteManager : MonoBehaviour
         instance.SetNotePattern();
     }
 
+    // 모든 노트들을 비활성화 시키며 다 클리어 시키는 함수
+    public void NotesClear()
+    {
+        for (int i = 0; i < instance.notes.Count; i++)
+        {
+            instance.notes[i].gameObject.SetActive(false);
+            instance.notes[i].transform.position = new Vector3(0, 1000, 0);
+            instance.RemoveNote(instance.notes[i]);
+            i--;
+        }
+    }
+
+    public void NotesSort()
+    {
+        notes.Sort((x, y) => x.time.CompareTo(y.time));
+    }
+
     // notes에 있는 노트들의 정보를 json으로 변환해서 리턴해주는 함수
     public string NotesToJson()
     {
@@ -213,7 +224,7 @@ public class NoteManager : MonoBehaviour
 
         notes.Sort((x, y) => x.time.CompareTo(y.time));
 
-        json += "\"notes\":[";
+        json += "[";
 
         for(int i = 0; i < notes.Count; i++)
         {
