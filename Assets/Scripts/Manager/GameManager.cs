@@ -54,11 +54,14 @@ public class GameManager : MonoBehaviour
     // 이후 시작하는 함수를 실행하는 코루틴
     private IEnumerator GameStarting(float waitTime)
     {
+        if (isGameStart) yield break;
+
+        NoteManager.instance.SetHavingNotes();
+
         countDownText.gameObject.SetActive(true);
 
         while (waitTime >= 0)
         {
-            Debug.Log(waitTime);
             countDownText.text = Mathf.FloorToInt(waitTime * 2).ToString();
             waitTime -= Time.deltaTime * 2;
             yield return null;
@@ -74,6 +77,8 @@ public class GameManager : MonoBehaviour
 
     public void GameReset()
     {
+        if (isGameStart == false) return;
+
         isGameStart = false;
 
         AudioManager.instance.MusicStop();

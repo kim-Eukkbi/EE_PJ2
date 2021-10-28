@@ -71,8 +71,11 @@ public class JudgementManager : MonoBehaviour
             Miss(note);
 
             float judgementTime = Mathf.Abs(GameManager.instance.currentTime - note.time);
-            Debug.Log(judgementTime + " - OutNote");
-            Debug.Log(note.time + " - " + GameManager.instance.currentTime);
+
+            //Debug.Log(judgementTime + " - OutNote");
+            //Debug.Log(note.time + " - " + GameManager.instance.currentTime);
+
+            
 
             // 한 프레임당 검사해도 부족할 수 있으니 여러번 검사
             OutNoteCheck();
@@ -99,23 +102,27 @@ public class JudgementManager : MonoBehaviour
         {
             Perfect(note);
 
-            Debug.Log(judgementTime);
-            Debug.Log(note.time + " - " + GameManager.instance.currentTime);
+            //Debug.Log(judgementTime);
+            //Debug.Log(note.time + " - " + GameManager.instance.currentTime);
 
             return true;
         }
         else if (great && judgementTime < greatJudgement)
         {
             Great(note);
-            Debug.Log(judgementTime + " - Great");
-            Debug.Log(note.time + " - " + GameManager.instance.currentTime);
+
+            //Debug.Log(judgementTime + " - Great");
+            //Debug.Log(note.time + " - " + GameManager.instance.currentTime);
+
             return true;
         }
         else if (miss && judgementTime < missJudgement)
         {
             Miss(note);
-            Debug.Log(judgementTime + " - Miss");
-            Debug.Log(note.time + " - " + GameManager.instance.currentTime);
+
+            //Debug.Log(judgementTime + " - Miss");
+            //Debug.Log(note.time + " - " + GameManager.instance.currentTime);
+
             return true;
         }
 

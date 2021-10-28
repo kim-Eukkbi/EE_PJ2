@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class NoteManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class NoteManager : MonoBehaviour
     public float noteRenderLength = 10f;
 
     private List<Note> notes;
+    private List<Note> havingNotes;
 
     /// <summary>
     /// DC == DontClick,
@@ -37,6 +39,7 @@ public class NoteManager : MonoBehaviour
         instance = this;
 
         notes = new List<Note>();
+        havingNotes = new List<Note>();
     }
 
     private void Start()
@@ -62,6 +65,12 @@ public class NoteManager : MonoBehaviour
         NoteMove();
     }
 
+    // 디버그용 함수
+    public void NoteDebug()
+    {
+        Debug.Log(notes.Count);
+    }
+
     // 활성화 되어있는 노트를 원으로 이동 시키는 함수
     private void NoteMove()
     {
@@ -77,8 +86,6 @@ public class NoteManager : MonoBehaviour
                 continue;
             }
 
-            Debug.Log(notes[i].time);
-
             // 노트의 시간 - 지금 시간을 빼서 그에 따른 위치에 이동시킨다
             notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time - AudioManager.instance.musicCurrentTime);
             notes[i].transform.position += notes[i].transform.up *
@@ -89,10 +96,9 @@ public class NoteManager : MonoBehaviour
     // SetSpawnNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
     private void SetNotePattern()
     {
-        for(int i = 0; i < 1000; i++)
+        for(int i = 0; i < havingNotes.Count; i++)
         {
-            //SetSpawnNote(NoteEnum.DC, i * 2, 2 + (i * 0.05f));
-            //SetSpawnNote(NoteEnum.DC, -i * 2, 2 + (i * 0.05f));
+            notes.Add(havingNotes[i]);
         }
     }
 
@@ -148,10 +154,12 @@ public class NoteManager : MonoBehaviour
         instance.notes.Add(note);
     }
 
-    // notes리스트의 가장 뒤에있는 값을 리턴하는 함수
-    public Note GetBackNote()
+    public void SetHavingNotes()
     {
-        return notes[notes.Count - 1];
+        for(int i = 0; i < notes.Count; i++)
+        {
+            havingNotes.Add(notes[i]);
+        }
     }
 
     // 받은 인수의 angle과 time에 알맞게 위치를 변경해주는 함수
@@ -183,31 +191,25 @@ public class NoteManager : MonoBehaviour
         removeNote.gameObject.SetActive(false);
         removeNote.transform.position = new Vector3(0, 1000, 0); // 오류 방지 코드
 
-        instance.notes.Remove(removeNote);
+        notes.Remove(removeNote);
     }
 
     // 게임안에 있는 노트들을 다시 처음으로 리셋시키는 함수
     public void NotesReset()
     {
-        for(int i = 0; i < instance.notes.Count; i++)
-        {
-            instance.notes[i].gameObject.SetActive(false);
-            instance.notes[i].transform.position = new Vector3(0, 1000, 0);
-            instance.RemoveNote(instance.notes[i]);
-            i--;
-        }
+        NotesClear();
 
-        instance.SetNotePattern();
+        SetNotePattern();
     }
 
     // 모든 노트들을 비활성화 시키며 다 클리어 시키는 함수
     public void NotesClear()
     {
-        for (int i = 0; i < instance.notes.Count; i++)
+        for (int i = 0; i < notes.Count; i++)
         {
-            instance.notes[i].gameObject.SetActive(false);
-            instance.notes[i].transform.position = new Vector3(0, 1000, 0);
-            instance.RemoveNote(instance.notes[i]);
+            notes[i].gameObject.SetActive(false);
+            notes[i].transform.position = new Vector3(0, 1000, 0);
+            RemoveNote(notes[i]);
             i--;
         }
     }

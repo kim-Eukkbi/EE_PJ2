@@ -13,6 +13,8 @@ public class SaveAndLoadManager : MonoBehaviour
 
     private string filePath;
 
+    private string fileName;
+
     private void Awake()
     {
         if(instance != null)
@@ -24,7 +26,7 @@ public class SaveAndLoadManager : MonoBehaviour
 
     private void Start()
     {
-        filePath = Application.persistentDataPath + "/" + "test.txt";
+        filePath = Application.persistentDataPath + "/noteFiles/";
 
         if(saveButton != null)
         {
@@ -38,23 +40,38 @@ public class SaveAndLoadManager : MonoBehaviour
                 Load();
             });
         }
+    }
 
+    public string GetFilePath()
+    {
+        return filePath;
     }
 
     private void Save()
     {
-        File.WriteAllText(filePath, NoteManager.instance.NotesToJson());
+        if(!Directory.Exists(filePath))
+        {
+            Directory.CreateDirectory(filePath);
+        }
 
-        Debug.Log(filePath);
+        fileName = FileUIManager.instance.GetFileName();
+
+        if (fileName == null) return;
+
+        File.WriteAllText(filePath + fileName, NoteManager.instance.NotesToJson());
+
+        FileUIManager.instance.FileUIActive(false);
     }
 
     private void Load()
     {
-        if(File.Exists(filePath))
-        {
-            string json = File.ReadAllText(filePath);
+        fileName = FileUIManager.instance.GetFileName(); // 지울 파일의 이름가져오기
 
-            NoteManager.instance.NotesToJson();
+        if (fileName == null) return; // 만약 값이 없을 경우 리턴
+
+        if (File.Exists(filePath + fileName))
+        {
+            string json = File.ReadAllText(filePath + fileName);
 
             Debug.Log("Load Json : " + json);
 
@@ -62,31 +79,15 @@ public class SaveAndLoadManager : MonoBehaviour
 
             NoteManager.instance.NotesClear();
 
-            Note note = null;
-
-            for(int i = 0; i < noteList.notes.Length; i++)
+            // 받은 json의 noteEnum에 따라서 다른 노트들을 생성한다
+            for (int i = 0; i < noteList.notes.Length; i++)
             {
-                switch(noteList.notes[i].noteEnum)
-                {
-                    case NoteManager.NoteEnum.DC:
-                        note = PoolManager.GetItem<DCNote>(NoteManager.instance.dcNotePrefab);
-                        break;
-                    case NoteManager.NoteEnum.Single:
-                        note = PoolManager.GetItem<SingleNote>(NoteManager.instance.singleNotePrefab);
-                        break;
-                    case NoteManager.NoteEnum.Long:
-                        note = PoolManager.GetItem<LongNote>(NoteManager.instance.longNotePrefab);
-                        break;
-                }
-
-                note.angle = noteList.notes[i].angle;
-                note.time = noteList.notes[i].time;
-
-                NoteManager.instance.AddNote(note);
-                NoteManager.instance.SetNoteValue(note);
+                OptionManager.instance.GetCreateNote(noteList.notes[i].angle, noteList.notes[i].time, noteList.notes[i].noteEnum);
             }
 
             NoteManager.instance.NotesSort();
+
+            FileUIManager.instance.FileUIActive(false);
         }
     }
 

@@ -7,11 +7,11 @@ public class OptionManager : MonoBehaviour
 {
     public static OptionManager instance;
 
-    public Button startBtn;
-    public Button stopBtn;
 
     [Header("Start And Stop")]
     public GameObject startAndStopPanel;
+    public Button startBtn;
+    public Button stopBtn;
 
     [Header("Game Information")]
     public GameObject gameInformationPanel;
@@ -76,18 +76,15 @@ public class OptionManager : MonoBehaviour
             {
                 SelectNoteManager.instance.SelectNote = null;
 
-                SelectNoteManager.instance.SelectNote = PoolManager.GetCreateItem<DCNote>(NoteManager.instance.dcNotePrefab);
+                Note note = GetCreateNote(0, GameManager.instance.countDownTime, NoteManager.NoteEnum.DC);
 
-                SelectNoteManager.instance.SelectNote.angle = 0;
-                SelectNoteManager.instance.SelectNote.time = GameManager.instance.countDownTime;
-                SelectNoteManager.instance.SelectNote.noteEnum = NoteManager.NoteEnum.DC;
+                noteAngleIF.text = note.angle.ToString();
+                noteTimeIF.text = note.time.ToString();
 
-                noteAngleIF.text = SelectNoteManager.instance.SelectNote.angle.ToString();
-                noteTimeIF.text = SelectNoteManager.instance.SelectNote.time.ToString();
+                SelectNoteManager.instance.SelectNote = note;
 
                 SelectNoteManager.instance.SelectNote.gameObject.SetActive(true);
 
-                NoteManager.instance.AddNote(SelectNoteManager.instance.SelectNote);
 
                 //Note note = PoolManager.GetCreateItem<DCNote>(NoteManager.instance.dcNotePrefab);
 
@@ -290,7 +287,7 @@ public class OptionManager : MonoBehaviour
         saveAndLoadPanel.SetActive(num == 4);
     }
 
-    private Note GetCreateNote(float angle, float time, NoteManager.NoteEnum noteEnum)
+    public Note GetCreateNote(float angle, float time, NoteManager.NoteEnum noteEnum)
     {
         Note note = null;
 
