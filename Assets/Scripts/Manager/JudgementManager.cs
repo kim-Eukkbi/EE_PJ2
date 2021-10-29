@@ -43,17 +43,10 @@ public class JudgementManager : MonoBehaviour
         if (NoteJudgementCheck(InputManager.instance.IsKeyDown,
                 InputManager.instance.IsKeyDown,
                 InputManager.instance.IsKeyDown,
-                whatIsSingleNote))
+                whatIsSingleNote | whatIsLongNote)){
+        }else if (NoteJudgementCheck(true, false, false, whatIsDCNote))
         {
-        }
-        else if (NoteJudgementCheck(InputManager.instance.IsKeyDown,
-                InputManager.instance.IsKeyDown,
-                InputManager.instance.IsKeyDown,
-                whatIsLongNote))
-        {
-        }
-        else if(NoteJudgementCheck(true, false, false, whatIsDCNote))
-        {
+            Debug.Log("이건가??");
             NoteJudgementCheck(true, false, false, whatIsDCNote);
         }
     }
@@ -70,13 +63,6 @@ public class JudgementManager : MonoBehaviour
             Note note = col.gameObject.GetComponent<Note>();
             Miss(note);
 
-            float judgementTime = Mathf.Abs(GameManager.instance.currentTime - note.time);
-
-            //Debug.Log(judgementTime + " - OutNote");
-            //Debug.Log(note.time + " - " + GameManager.instance.currentTime);
-
-            
-
             // 한 프레임당 검사해도 부족할 수 있으니 여러번 검사
             OutNoteCheck();
         }
@@ -91,12 +77,16 @@ public class JudgementManager : MonoBehaviour
 
         if (judgeCols.Length == 0) return false;
 
+        if(noteEnum == whatIsLongNote)
+        {
+            perfect = InputManager.instance.IsKey || InputManager.instance.IsKeyDown;
+        }
+
         Array.Sort(judgeCols, (x, y) => x.GetComponent<Note>().time.CompareTo(y.GetComponent<Note>().time));
 
         Note note = judgeCols[0].GetComponent<Note>();
 
         float judgementTime = Mathf.Abs(GameManager.instance.currentTime - note.time);
-
 
         if (perfect && judgementTime < perfectJudgement)
         {

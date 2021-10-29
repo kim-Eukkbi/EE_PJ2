@@ -50,10 +50,6 @@ public class OptionManager : MonoBehaviour
     }
     void Start()
     {
-        if (stopBtn == null) // 잠시 그 뭐냐 그냥 잠시 쓰는거
-        {
-            GameManager.instance.GameStart();
-        }
         if (startBtn != null)
         {
             startBtn.onClick.AddListener(() =>
@@ -81,27 +77,9 @@ public class OptionManager : MonoBehaviour
                 noteAngleIF.text = note.angle.ToString();
                 noteTimeIF.text = note.time.ToString();
 
+                note.gameObject.SetActive(true);
+
                 SelectNoteManager.instance.SelectNote = note;
-
-                SelectNoteManager.instance.SelectNote.gameObject.SetActive(true);
-
-
-                //Note note = PoolManager.GetCreateItem<DCNote>(NoteManager.instance.dcNotePrefab);
-
-                //note.angle = 0;
-                //note.time = GameManager.instance.countDownTime;
-                //note.noteEnum = NoteManager.NoteEnum.DC;
-
-                //noteAngleIF.text = note.angle.ToString();
-                //noteTimeIF.text = note.time.ToString();
-
-                //note.gameObject.SetActive(true);
-
-                //NoteManager.instance.AddNote(note);
-
-                //SelectNoteManager.instance.SelectNote = note;
-
-                //Debug.Log("ADDDDDDD NOOOOOOOTOTOTETETEEE");
 
                 UISetActive(2);
             });
@@ -232,11 +210,9 @@ public class OptionManager : MonoBehaviour
                 float angle = SelectNoteManager.instance.SelectNote.angle;
                 float time = SelectNoteManager.instance.SelectNote.time;
 
-                Debug.Log(SelectNoteManager.instance.SelectNote);
-
-
-
                 NoteManager.instance.RemoveNote(SelectNoteManager.instance.SelectNote);
+
+                SelectNoteManager.instance.SelectNote = null;
 
                 switch (index)
                 {
@@ -290,8 +266,6 @@ public class OptionManager : MonoBehaviour
     public Note GetCreateNote(float angle, float time, NoteManager.NoteEnum noteEnum)
     {
         Note note = null;
-
-        Debug.Log("매우 많이 생성중");
 
         switch (noteEnum)
         {

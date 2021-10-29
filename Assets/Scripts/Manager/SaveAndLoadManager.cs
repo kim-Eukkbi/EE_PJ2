@@ -56,7 +56,7 @@ public class SaveAndLoadManager : MonoBehaviour
 
         fileName = FileUIManager.instance.GetFileName();
 
-        if (fileName == null) return;
+        if (fileName == "") return;
 
         File.WriteAllText(filePath + fileName, NoteManager.instance.NotesToJson());
 
@@ -74,6 +74,8 @@ public class SaveAndLoadManager : MonoBehaviour
             string json = File.ReadAllText(filePath + fileName);
 
             Debug.Log("Load Json : " + json);
+
+            Debug.Log(filePath);
 
             NoteVOList noteList = JsonUtility.FromJson<NoteVOList>("{\"notes\":" + json + "}");
 

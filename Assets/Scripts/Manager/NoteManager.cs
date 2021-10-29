@@ -100,6 +100,8 @@ public class NoteManager : MonoBehaviour
         {
             notes.Add(havingNotes[i]);
         }
+
+        havingNotes.Clear();
     }
 
     // 지금 진행되는 시간에 맞춰 노트들을 이동시키는 함수
@@ -212,6 +214,8 @@ public class NoteManager : MonoBehaviour
             RemoveNote(notes[i]);
             i--;
         }
+
+        Debug.Log("notes.Count : " + notes.Count);
     }
 
     public void NotesSort()

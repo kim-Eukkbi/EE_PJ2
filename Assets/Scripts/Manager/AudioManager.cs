@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource audioSource;
     public AudioClip audioClip;
+    public Text currentTimeText;
 
     public Scrollbar scrollbar;
 
@@ -33,6 +34,7 @@ public class AudioManager : MonoBehaviour
         if(scrollbar != null)
         {
             musicCurrentTime = musicLength * scrollbar.value;
+            currentTimeText.text = (musicLength * scrollbar.value).ToString("0.0");
         }
     }
 
