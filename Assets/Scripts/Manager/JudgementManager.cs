@@ -77,14 +77,15 @@ public class JudgementManager : MonoBehaviour
 
         if (judgeCols.Length == 0) return false;
 
-        if(noteEnum == whatIsLongNote)
-        {
-            perfect = InputManager.instance.IsKey || InputManager.instance.IsKeyDown;
-        }
-
         Array.Sort(judgeCols, (x, y) => x.GetComponent<Note>().time.CompareTo(y.GetComponent<Note>().time));
 
         Note note = judgeCols[0].GetComponent<Note>();
+
+        if (note.noteEnum == NoteManager.NoteEnum.Long)
+        {
+            perfect = InputManager.instance.IsKey || InputManager.instance.IsKeyDown;
+            Debug.Log("LONG NOTE IS HEREEEEEEEEEEE");
+        }
 
         float judgementTime = Mathf.Abs(GameManager.instance.currentTime - note.time);
 

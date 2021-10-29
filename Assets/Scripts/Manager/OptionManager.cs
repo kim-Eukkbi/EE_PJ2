@@ -76,6 +76,7 @@ public class OptionManager : MonoBehaviour
 
                 noteAngleIF.text = note.angle.ToString();
                 noteTimeIF.text = note.time.ToString();
+                noteEnumDropdown.SetValueWithoutNotify(0);
 
                 note.gameObject.SetActive(true);
 
