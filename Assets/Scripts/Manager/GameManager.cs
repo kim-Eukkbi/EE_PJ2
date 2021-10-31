@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
         while (waitTime >= 0)
         {
-            countDownText.text = Mathf.FloorToInt(waitTime * 2).ToString();
+            countDownText.text = Mathf.FloorToInt(waitTime).ToString();
             waitTime -= Time.deltaTime * 2;
             yield return null;
         }
