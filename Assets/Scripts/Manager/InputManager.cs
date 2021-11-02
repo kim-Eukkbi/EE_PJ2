@@ -26,13 +26,6 @@ public class InputManager : MonoBehaviour
 
         IsKey = Input.GetKey(KeyCode.D);// 잠시 편한 키로 커스텀 해놓았슴
 
-        if(!GameManager.instance.isGameStart)
-        {
-            NoteSpawnKeyDown = Input.GetKeyDown(KeyCode.S);
-        }
-        else
-        {
-            NoteSpawnKeyDown = false;
-        }
+        NoteSpawnKeyDown = Input.GetKeyDown(KeyCode.S);
     }
 }

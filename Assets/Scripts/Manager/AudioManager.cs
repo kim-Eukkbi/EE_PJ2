@@ -41,8 +41,11 @@ public class AudioManager : MonoBehaviour
     // ¡ˆ±› Ω√∞£ø° ¿Ωæ«¿ª Ω√¿€
     public void SetTimeAndStart()
     {
-        audioSource.time = musicCurrentTime;
-        audioSource.Play();
+        if(musicCurrentTime < musicLength)
+        {
+            audioSource.time = musicCurrentTime;
+            audioSource.Play();
+        }
     }
 
     // ¿Ωæ« ∏ÿ√Á

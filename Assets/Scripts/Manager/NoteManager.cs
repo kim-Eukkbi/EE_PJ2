@@ -214,8 +214,6 @@ public class NoteManager : MonoBehaviour
             RemoveNote(notes[i]);
             i--;
         }
-
-        Debug.Log("notes.Count : " + notes.Count);
     }
 
     public void NotesSort()

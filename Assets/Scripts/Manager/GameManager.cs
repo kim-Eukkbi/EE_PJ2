@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        judgeLineY = Vector3.Distance(circle.transform.position, judgeLine.transform.position);
+
         if (!isGameStart)
         {
             return;
@@ -42,7 +44,6 @@ public class GameManager : MonoBehaviour
         timeText.text = "Time : " + currentTime.ToString("0.000");
         AudioManager.instance.SetScrollBar();
 
-        judgeLineY = Vector3.Distance(circle.transform.position, judgeLine.transform.position);
     }
 
     public void GameStart()
@@ -83,6 +84,7 @@ public class GameManager : MonoBehaviour
 
         AudioManager.instance.MusicStop();
         NoteManager.instance.NotesReset();
+        ConvenienceManager.instance.SetStartingNotes();
         ComboManager.instance.ComboReset();
 
         instance.countDownTime = instance.waitTimeTemp;
