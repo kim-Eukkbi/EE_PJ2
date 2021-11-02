@@ -253,9 +253,11 @@ public class OptionManager : MonoBehaviour
     /// num == 0 : startAndStopPanel 활성화,
     /// num == 1 : gameInformationPanel 활성화,
     /// num == 2 : noteInformationPanel 활성화
+    /// num == 3 : noteAddPanel 활성화
+    /// num == 4 : saveAndLoadPanel 활성화
     /// </summary>
     /// <param name="num"></param>
-    private void UISetActive(int num)
+    public void UISetActive(int num)
     {
         startAndStopPanel.SetActive(num == 0);
         gameInformationPanel.SetActive(num == 1);

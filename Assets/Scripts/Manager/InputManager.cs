@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
 
     public bool IsKeyDown { get; private set; }
     public bool IsKey { get; private set; }
-    public int KeyInputCount { get; private set; }
+    public bool NoteSpawnKeyDown { get; private set; }
 
     private void Awake()
     {
@@ -25,5 +25,14 @@ public class InputManager : MonoBehaviour
         IsKeyDown = Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.V); // 잠시 편한 키로 커스텀 해놓았슴
 
         IsKey = Input.GetKey(KeyCode.D);// 잠시 편한 키로 커스텀 해놓았슴
+
+        if(!GameManager.instance.isGameStart)
+        {
+            NoteSpawnKeyDown = Input.GetKeyDown(KeyCode.S);
+        }
+        else
+        {
+            NoteSpawnKeyDown = false;
+        }
     }
 }

@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance != null)
+        if(instance != null)        
         {
             Debug.LogError("여러개의 AudioManager가 있습니다");
         }

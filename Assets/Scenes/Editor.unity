@@ -6668,6 +6668,7 @@ GameObject:
   - component: {fileID: 1830056981}
   - component: {fileID: 1830056980}
   - component: {fileID: 1830056982}
+  - component: {fileID: 1830056983}
   m_Layer: 0
   m_Name: ManagerObj
   m_TagString: Untagged
@@ -6879,6 +6880,18 @@ MonoBehaviour:
   filePathPrefab: {fileID: 4276951607724087861, guid: 01345565a4a1e014199fd64a92dc57bf, type: 3}
   filePathInputField: {fileID: 855640939}
   fileUIOpenButton: {fileID: 1175361449}
+--- !u!114 &1830056983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830056971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40e9f26cb5aa05143b8b0d29b3626899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1831123289
 GameObject:
   m_ObjectHideFlags: 0
