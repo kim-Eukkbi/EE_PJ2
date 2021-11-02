@@ -60,7 +60,7 @@ public class SelectNoteManager : MonoBehaviour
             {
                 selectNote = ray.transform.GetComponent<Note>();
 
-                OptionManager.instance.SetPanels(selectNote);
+                OptionManager.instance.SetNoteInformationPanels(selectNote);
             }
         }
     }

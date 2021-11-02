@@ -7134,6 +7134,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e732e9d08daa8b4aaafbcfacff6d6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whatIsDCNote:
+    serializedVersion: 2
+    m_Bits: 128
+  whatIsSingleNote:
+    serializedVersion: 2
+    m_Bits: 256
+  whatIsLongNote:
+    serializedVersion: 2
+    m_Bits: 512
   testObj: {fileID: 0}
   SpawnNotesToggle: {fileID: 1590639263}
 --- !u!1 &1831123289

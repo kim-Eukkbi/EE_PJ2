@@ -231,7 +231,7 @@ public class OptionManager : MonoBehaviour
         }
     }
 
-    public void SetPanels(Note note)
+    public void SetNoteInformationPanels(Note note)
     {
         if (note == null)
         {

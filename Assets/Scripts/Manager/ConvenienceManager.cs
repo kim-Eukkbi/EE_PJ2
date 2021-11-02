@@ -7,6 +7,10 @@ public class ConvenienceManager : MonoBehaviour
 {
     public static ConvenienceManager instance;
 
+    public LayerMask whatIsDCNote;
+    public LayerMask whatIsSingleNote;
+    public LayerMask whatIsLongNote;
+
     public GameObject testObj;
     public Toggle SpawnNotesToggle;
 
@@ -31,25 +35,54 @@ public class ConvenienceManager : MonoBehaviour
 
         if (!GameManager.instance.isGameStart)
         {
-            if (InputManager.instance.NoteSpawnKeyDown)
+            if (InputManager.instance.SingleNoteSpawnKeyDown)
+            {
+                SpawnNoteMousePos(NoteManager.NoteEnum.Single);
+            }
+            else if(InputManager.instance.DCNoteSpawnKeyDown)
+            {
+                SpawnNoteMousePos(NoteManager.NoteEnum.DC);
+            }
+            else if (InputManager.instance.LongNoteSpawnKeyDown)
+            {
+                SpawnNoteMousePos(NoteManager.NoteEnum.Long);
+            }
+
+            if(InputManager.instance.RemoveNoteKeyDown)
             {
                 Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                mousePos.z = 0;
-                float dis = Vector3.Distance(mousePos, GameManager.instance.circle.transform.position)
-                                            - GameManager.instance.judgeLineY
-                                            - GameManager.instance.judgeLine.transform.localScale.y;
+                RaycastHit2D ray = Physics2D.Raycast(mousePos, Camera.main.transform.forward * -1, 20, whatIsDCNote | whatIsSingleNote | whatIsLongNote);
 
-                OptionManager.instance.GetCreateNote(circleAngle, AudioManager.instance.musicLength * AudioManager.instance.scrollbar.value + (dis / NoteManager.instance.noteSpeed), NoteManager.NoteEnum.Single);
-                OptionManager.instance.UISetActive(2);
+                if (ray.collider != null)
+                {   
+                    NoteManager.instance.RemoveNote(ray.transform.GetComponent<Note>());
+                }
             }
         }
         else
         {
             if(SpawnNotesToggle.isOn)
             {
-                if (InputManager.instance.NoteSpawnKeyDown)
+                if(InputManager.instance.DCNoteSpawnKeyDown ||
+                    InputManager.instance.SingleNoteSpawnKeyDown ||
+                    InputManager.instance.LongNoteSpawnKeyDown)
                 {
-                    SingleNote note = PoolManager.GetCreateItem<SingleNote>(NoteManager.instance.singleNotePrefab);
+                    Note note = null;
+
+                    if (InputManager.instance.SingleNoteSpawnKeyDown)
+                    {
+                        note = PoolManager.GetCreateItem<SingleNote>(NoteManager.instance.singleNotePrefab);
+                    }
+                    else if(InputManager.instance.DCNoteSpawnKeyDown)
+                    {
+                        note = PoolManager.GetCreateItem<DCNote>(NoteManager.instance.dcNotePrefab);
+                    }
+                    else if (InputManager.instance.LongNoteSpawnKeyDown)
+                    {
+                        note = PoolManager.GetCreateItem<LongNote>(NoteManager.instance.longNotePrefab);
+                    }
+
+                    note.gameObject.SetActive(false);
 
                     note.time = GameManager.instance.currentTime;
                     note.angle = circleAngle;
@@ -69,5 +102,19 @@ public class ConvenienceManager : MonoBehaviour
         }
 
         startingNotes.Clear();
+    }
+
+    private void SpawnNoteMousePos(NoteManager.NoteEnum noteEnum)
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
+        float dis = Vector3.Distance(mousePos, GameManager.instance.circle.transform.position)
+                                    - GameManager.instance.judgeLineY
+                                    - GameManager.instance.judgeLine.transform.localScale.y;
+
+        OptionManager.instance.GetCreateNote(circleAngle,
+                                    AudioManager.instance.musicLength * AudioManager.instance.scrollbar.value + (dis / NoteManager.instance.noteSpeed),
+                                    noteEnum);
+        OptionManager.instance.UISetActive(2);
     }
 }

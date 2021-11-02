@@ -9,7 +9,10 @@ public class InputManager : MonoBehaviour
 
     public bool IsKeyDown { get; private set; }
     public bool IsKey { get; private set; }
-    public bool NoteSpawnKeyDown { get; private set; }
+    public bool RemoveNoteKeyDown { get; private set; }
+    public bool DCNoteSpawnKeyDown { get; private set; }
+    public bool SingleNoteSpawnKeyDown { get; private set; }
+    public bool LongNoteSpawnKeyDown { get; private set; }
 
     private void Awake()
     {
@@ -26,6 +29,9 @@ public class InputManager : MonoBehaviour
 
         IsKey = Input.GetKey(KeyCode.D);// 잠시 편한 키로 커스텀 해놓았슴
 
-        NoteSpawnKeyDown = Input.GetKeyDown(KeyCode.S);
+        SingleNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.S);
+        DCNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.A);
+        LongNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.D);
+        RemoveNoteKeyDown = Input.GetKeyDown(KeyCode.R);
     }
 }
