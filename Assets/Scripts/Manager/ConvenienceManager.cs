@@ -15,15 +15,13 @@ public class ConvenienceManager : MonoBehaviour
             circleAngle += 360;
         }
 
-        Debug.Log(circleAngle);
-
         if(InputManager.instance.NoteSpawnKeyDown)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePos.z = 0;
             float dis = Vector3.Distance(mousePos, GameManager.instance.circle.transform.position);
 
-            OptionManager.instance.GetCreateNote(circleAngle, GameManager.instance.currentTime + (dis / NoteManager.instance.noteSpeed), NoteManager.NoteEnum.Single);
+            OptionManager.instance.GetCreateNote(circleAngle, AudioManager.instance.musicLength * AudioManager.instance.scrollbar.value + (dis / NoteManager.instance.noteSpeed), NoteManager.NoteEnum.Single);
             OptionManager.instance.UISetActive(2);
         }
     }
