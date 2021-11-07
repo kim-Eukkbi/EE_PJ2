@@ -12,11 +12,14 @@ public class GameManager : MonoBehaviour
     public GameObject judgeLine;
     public Text timeText;
     public Text countDownText;
+    public string stageName;
     public float currentTime = 0;
     public float countDownTime = 2;
     public float judgeLineY = 0f;
 
     public bool isGameStart = false;
+
+    public bool isEditerMode = true;
 
     private float waitTimeTemp;
 
@@ -33,6 +36,13 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if(!isEditerMode)
+        {
+            if(InputManager.instance.isGameStartKeyDown)
+            {
+                GameStart();
+            }
+        }
         judgeLineY = Vector3.Distance(circle.transform.position, judgeLine.transform.position);
 
         if (!isGameStart)

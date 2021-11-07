@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 
 public class NoteManager : MonoBehaviour
 {
@@ -96,12 +97,38 @@ public class NoteManager : MonoBehaviour
     // SetSpawnNote 함수를 통해 노트의 패턴을 생성하는 함수 ---------------------------------------------------------------------
     private void SetNotePattern()
     {
-        for(int i = 0; i < havingNotes.Count; i++)
-        {
-            notes.Add(havingNotes[i]);
-        }
+        // 스테이지의 이름을 가진 파일을 가져와서 생성 하면 좋지 않을까?
 
-        havingNotes.Clear();
+        if(!GameManager.instance.isEditerMode)
+        {
+            string fileName = GameManager.instance.stageName;
+            string filePath = SaveAndLoadManager.instance.GetFilePath();
+            if (File.Exists(filePath + GameManager.instance.stageName))
+            {
+                string json = File.ReadAllText(filePath + fileName);
+
+                NoteVOList noteList = JsonUtility.FromJson<NoteVOList>("{\"notes\":" + json + "}");
+
+                NotesClear();
+
+                // 받은 json의 noteEnum에 따라서 다른 노트들을 생성한다
+                for (int i = 0; i < noteList.notes.Length; i++)
+                {
+                    SetSpawnNote(noteList.notes[i].noteEnum, noteList.notes[i].angle, noteList.notes[i].time);
+                }
+
+                NotesSort();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < havingNotes.Count; i++)
+            {
+                notes.Add(havingNotes[i]);
+            }
+
+            havingNotes.Clear();
+        }
     }
 
     // 지금 진행되는 시간에 맞춰 노트들을 이동시키는 함수
@@ -153,7 +180,9 @@ public class NoteManager : MonoBehaviour
         note.transform.position += note.transform.up * 
                                 (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
 
-        instance.notes.Add(note);
+        notes.Add(note);
+
+        SetNoteValue(note);
     }
 
     public void SetHavingNotes()

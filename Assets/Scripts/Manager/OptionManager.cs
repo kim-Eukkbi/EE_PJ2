@@ -50,184 +50,189 @@ public class OptionManager : MonoBehaviour
     }
     void Start()
     {
-        if (startBtn != null)
+        if(GameManager.instance.isEditerMode)
         {
-            startBtn.onClick.AddListener(() =>
+            if (startBtn != null)
             {
-                GameManager.instance.GameStart();
-            });
-        }
-
-        if (stopBtn != null)
-        {
-            stopBtn.onClick.AddListener(() =>
-            {
-                GameManager.instance.GameReset();
-            });
-        }
-
-        if (noteAddPanel != null)
-        {
-            noteAddButton.onClick.AddListener(() =>
-            {
-                SelectNoteManager.instance.SelectNote = null;
-
-                Note note = GetCreateNote(0, GameManager.instance.countDownTime, NoteManager.NoteEnum.DC);
-
-                noteAngleIF.text = note.angle.ToString();
-                noteTimeIF.text = note.time.ToString();
-                noteEnumDropdown.SetValueWithoutNotify(0);
-
-                note.gameObject.SetActive(true);
-
-                SelectNoteManager.instance.SelectNote = note;
-
-                UISetActive(2);
-            });
-        }
-
-        if (PanelMoveButtonsPanel != null)
-        {
-            if (startAndStopMoveBtn != null)
-            {
-                startAndStopMoveBtn.onClick.AddListener(() =>
+                startBtn.onClick.AddListener(() =>
                 {
-                    UISetActive(0);
+                    GameManager.instance.GameStart();
                 });
             }
 
-            if (gameInformationMoveBtn != null)
+            if (stopBtn != null)
             {
-                gameInformationMoveBtn.onClick.AddListener(() =>
+                stopBtn.onClick.AddListener(() =>
                 {
-                    UISetActive(1);
-                });
-
-                removeNoteButton.onClick.AddListener(() =>
-                {
-                    if (SelectNoteManager.instance.SelectNote != null)
-                    {
-                        NoteManager.instance.RemoveNote(SelectNoteManager.instance.SelectNote);
-
-                        SelectNoteManager.instance.SelectNote = null;
-                    }
+                    GameManager.instance.GameReset();
                 });
             }
 
-            if (noteInformationMoveBtn != null)
+            if (noteAddPanel != null)
             {
-                noteInformationMoveBtn.onClick.AddListener(() =>
+                noteAddButton.onClick.AddListener(() =>
                 {
+                    SelectNoteManager.instance.SelectNote = null;
+
+                    Note note = GetCreateNote(0, GameManager.instance.countDownTime, NoteManager.NoteEnum.DC);
+
+                    noteAngleIF.text = note.angle.ToString();
+                    noteTimeIF.text = note.time.ToString();
+                    noteEnumDropdown.SetValueWithoutNotify(0);
+
+                    note.gameObject.SetActive(true);
+
+                    SelectNoteManager.instance.SelectNote = note;
+
                     UISetActive(2);
                 });
             }
 
-            if (noteAddMoveBtn != null)
+            if (PanelMoveButtonsPanel != null)
             {
-                noteAddMoveBtn.onClick.AddListener(() =>
+                if (startAndStopMoveBtn != null)
                 {
-                    UISetActive(3);
-                });
-            }
+                    startAndStopMoveBtn.onClick.AddListener(() =>
+                    {
+                        UISetActive(0);
+                    });
+                }
 
-            if (saveAndLoadMoveBtn != null)
-            {
-                saveAndLoadMoveBtn.onClick.AddListener(() =>
+                if (gameInformationMoveBtn != null)
                 {
-                    UISetActive(4);
-                });
+                    gameInformationMoveBtn.onClick.AddListener(() =>
+                    {
+                        UISetActive(1);
+                    });
+
+                    removeNoteButton.onClick.AddListener(() =>
+                    {
+                        if (SelectNoteManager.instance.SelectNote != null)
+                        {
+                            NoteManager.instance.RemoveNote(SelectNoteManager.instance.SelectNote);
+
+                            SelectNoteManager.instance.SelectNote = null;
+                        }
+                    });
+                }
+
+                if (noteInformationMoveBtn != null)
+                {
+                    noteInformationMoveBtn.onClick.AddListener(() =>
+                    {
+                        UISetActive(2);
+                    });
+                }
+
+                if (noteAddMoveBtn != null)
+                {
+                    noteAddMoveBtn.onClick.AddListener(() =>
+                    {
+                        UISetActive(3);
+                    });
+                }
+
+                if (saveAndLoadMoveBtn != null)
+                {
+                    saveAndLoadMoveBtn.onClick.AddListener(() =>
+                    {
+                        UISetActive(4);
+                    });
+                }
             }
         }
     }
 
     private void Update()
     {
-        if (gameInformationPanel != null)
+        if(GameManager.instance.isEditerMode)
         {
-            if (gameInformationPanel.activeSelf)
+            if (gameInformationPanel != null)
             {
-                int result = 0;
-
-                if (int.TryParse(noteSpeedIF.text, out result))
+                if (gameInformationPanel.activeSelf)
                 {
-                    NoteManager.instance.noteSpeed = result;
-                }
+                    int result = 0;
 
-                if (int.TryParse(countDownIF.text, out result))
-                {
-                    GameManager.instance.countDownTime = result;
+                    if (int.TryParse(noteSpeedIF.text, out result))
+                    {
+                        NoteManager.instance.noteSpeed = result;
+                    }
+
+                    if (int.TryParse(countDownIF.text, out result))
+                    {
+                        GameManager.instance.countDownTime = result;
+                    }
                 }
             }
-        }
 
-        if (noteInformationPanel != null)
-        {
-            if (noteInformationPanel.activeSelf)
+            if (noteInformationPanel != null)
             {
-                if (float.TryParse(noteAngleIF.text, out float angle) && float.TryParse(noteTimeIF.text, out float time))
+                if (noteInformationPanel.activeSelf)
                 {
-                    if (time < 0.3f)
+                    if (float.TryParse(noteAngleIF.text, out float angle) && float.TryParse(noteTimeIF.text, out float time))
                     {
-                        noteTimeIF.text = "0.3";
-                        time = 0.3f;
-                    }
-                    if (SelectNoteManager.instance.SelectNote != null)
-                    {
-                        Note note = SelectNoteManager.instance.SelectNote;
+                        if (time < 0.3f)
+                        {
+                            noteTimeIF.text = "0.3";
+                            time = 0.3f;
+                        }
+                        if (SelectNoteManager.instance.SelectNote != null)
+                        {
+                            Note note = SelectNoteManager.instance.SelectNote;
 
-                        note.angle = angle;
-                        note.time = time;
-                        note.noteEnum = (NoteManager.NoteEnum)(noteEnumDropdown.value + 7);
+                            note.angle = angle;
+                            note.time = time;
+                            note.noteEnum = (NoteManager.NoteEnum)(noteEnumDropdown.value + 7);
 
-                        SelectNoteManager.instance.SelectNote = note;
-                    }
-                }
-                else
-                {
-                    noteAngleIF.text = noteAngleIF.text == "" ? "0" : noteAngleIF.text;
-                    //noteTimeIF.text = noteTimeIF.text == "" ? "0" : noteTimeIF.text;
-                }
-
-                if (removeNoteButton != null)
-                {
-                    if (SelectNoteManager.instance.SelectNote != null)
-                    {
-                        removeNoteButton.gameObject.SetActive(true);
+                            SelectNoteManager.instance.SelectNote = note;
+                        }
                     }
                     else
                     {
-                        removeNoteButton.gameObject.SetActive(false);
+                        noteAngleIF.text = noteAngleIF.text == "" ? "0" : noteAngleIF.text;
+                    }
+
+                    if (removeNoteButton != null)
+                    {
+                        if (SelectNoteManager.instance.SelectNote != null)
+                        {
+                            removeNoteButton.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            removeNoteButton.gameObject.SetActive(false);
+                        }
                     }
                 }
+
+                noteEnumDropdown.onValueChanged.AddListener((int index) =>
+                {
+                    if ((int)SelectNoteManager.instance.SelectNote.noteEnum == 7 + index)
+                    {
+                        return;
+                    }
+
+                    float angle = SelectNoteManager.instance.SelectNote.angle;
+                    float time = SelectNoteManager.instance.SelectNote.time;
+
+                    NoteManager.instance.RemoveNote(SelectNoteManager.instance.SelectNote);
+
+                    SelectNoteManager.instance.SelectNote = null;
+
+                    switch (index)
+                    {
+                        case 0:
+                            SelectNoteManager.instance.SelectNote = GetCreateNote(angle, time, NoteManager.NoteEnum.DC);
+                            break;
+                        case 1:
+                            SelectNoteManager.instance.SelectNote = GetCreateNote(angle, time, NoteManager.NoteEnum.Single);
+                            break;
+                        case 2:
+                            SelectNoteManager.instance.SelectNote = GetCreateNote(angle, time, NoteManager.NoteEnum.Long);
+                            break;
+                    }
+                });
             }
-
-            noteEnumDropdown.onValueChanged.AddListener((int index) =>
-            {
-                if ((int)SelectNoteManager.instance.SelectNote.noteEnum == 7 + index)
-                {
-                    return;
-                }
-
-                float angle = SelectNoteManager.instance.SelectNote.angle;
-                float time = SelectNoteManager.instance.SelectNote.time;
-
-                NoteManager.instance.RemoveNote(SelectNoteManager.instance.SelectNote);
-
-                SelectNoteManager.instance.SelectNote = null;
-
-                switch (index)
-                {
-                    case 0:
-                        SelectNoteManager.instance.SelectNote = GetCreateNote(angle, time, NoteManager.NoteEnum.DC);
-                        break;
-                    case 1:
-                        SelectNoteManager.instance.SelectNote = GetCreateNote(angle, time, NoteManager.NoteEnum.Single);
-                        break;
-                    case 2:
-                        SelectNoteManager.instance.SelectNote = GetCreateNote(angle, time, NoteManager.NoteEnum.Long);
-                        break;
-                }
-            });
         }
     }
 
@@ -259,11 +264,14 @@ public class OptionManager : MonoBehaviour
     /// <param name="num"></param>
     public void UISetActive(int num)
     {
-        startAndStopPanel.SetActive(num == 0);
-        gameInformationPanel.SetActive(num == 1);
-        noteInformationPanel.SetActive(num == 2);
-        noteAddPanel.SetActive(num == 3);
-        saveAndLoadPanel.SetActive(num == 4);
+        if(GameManager.instance.isEditerMode)
+        {
+            startAndStopPanel.SetActive(num == 0);
+            gameInformationPanel.SetActive(num == 1);
+            noteInformationPanel.SetActive(num == 2);
+            noteAddPanel.SetActive(num == 3);
+            saveAndLoadPanel.SetActive(num == 4);
+        }
     }
 
     public Note GetCreateNote(float angle, float time, NoteManager.NoteEnum noteEnum)
