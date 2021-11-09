@@ -16,7 +16,8 @@ public class ButtonManager : MonoBehaviour
             buttons.Add(item);
         }
 
-        SetUI();
+        buttons[0].transform.DOMove(buttons[0].transform.position, .5f);
+       // SetUI();
     }
 
     private void SetUI()
@@ -25,8 +26,8 @@ public class ButtonManager : MonoBehaviour
         float j = 0;
         for (int i =0; i < buttons.Count;i++)
         {
-            UIseq.Join(buttons[i].transform.DOMoveX(1,.5f + j));
-            j += .25f;  
+            UIseq.Insert(j,buttons[i].transform.DOLocalMoveX(.1f,.5f));
+            j += .15f;
         }
     }
 }
