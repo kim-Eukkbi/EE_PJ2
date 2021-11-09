@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
     public bool DCNoteSpawnKeyDown { get; private set; }
     public bool SingleNoteSpawnKeyDown { get; private set; }
     public bool LongNoteSpawnKeyDown { get; private set; }
-
+    public bool isGameStartKeyDown { get; private set; }
     private void Awake()
     {
         if(instance != null)
@@ -33,5 +33,7 @@ public class InputManager : MonoBehaviour
         DCNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.A);
         LongNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.D);
         RemoveNoteKeyDown = Input.GetKeyDown(KeyCode.R);
+        isGameStartKeyDown = Input.GetKeyDown(KeyCode.Return);
+
     }
 }
