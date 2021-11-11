@@ -17,12 +17,14 @@ public class ButtonManager : MonoBehaviour
         }
 
         buttons[0].transform.DOMove(buttons[0].transform.position, .5f);
-       // SetUI();
+       
+        SetUI();
     }
 
     private void SetUI()
     {
         Sequence UIseq = DOTween.Sequence();
+
         float j = 0;
         for (int i =0; i < buttons.Count;i++)
         {

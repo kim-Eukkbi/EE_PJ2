@@ -103,6 +103,12 @@ public class NoteManager : MonoBehaviour
         {
             string fileName = GameManager.instance.stageName;
             string filePath = SaveAndLoadManager.instance.GetFilePath();
+
+            if(filePath == SaveAndLoadManager.instance.nullFilePath)
+            {
+                return;
+            }
+
             if (File.Exists(filePath + GameManager.instance.stageName))
             {
                 string json = File.ReadAllText(filePath + fileName);

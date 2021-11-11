@@ -11,6 +11,8 @@ public class SaveAndLoadManager : MonoBehaviour
     public Button saveButton;
     public Button loadButton;
 
+    public string nullFilePath;
+    
     private string filePath;
 
     private string fileName;
@@ -28,7 +30,9 @@ public class SaveAndLoadManager : MonoBehaviour
     {
         filePath = Application.persistentDataPath + "/noteFiles/";
 
-        if(saveButton != null)
+        nullFilePath = Application.persistentDataPath + "/noteFiles/";
+
+        if (saveButton != null)
         {
             saveButton.onClick.AddListener(() =>
             {
@@ -45,6 +49,11 @@ public class SaveAndLoadManager : MonoBehaviour
     public string GetFilePath()
     {
         return filePath;
+    }
+
+    public void SetFilePath(string newFilepath)
+    {
+        filePath = newFilepath;
     }
 
     private void Save()
