@@ -7,15 +7,17 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
 
-    public AudioSource audioSource;
-    public AudioClip audioClip;
-    public Text barCurrentTimeText;
+    public AudioSource audioSource; // 플레이 할 오브젝트
+    [Range(0, 1)]
+    public float audioSoundPower; // 음악 소리의 크기
+    public AudioClip audioClip; // 플레이 할 음악
+    public Text barCurrentTimeText; // 진행도 바의 시간 텍스트
 
-    public Scrollbar scrollbar;
+    public Scrollbar scrollbar; // 진행도 바
 
-    public float musicLength = 0;
+    public float musicLength = 0; // 음악 길이
 
-    public float musicCurrentTime = 0f;
+    public float musicCurrentTime = 0f; // 지금 음악 진행도
 
     private void Awake()
     {
@@ -31,10 +33,13 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        if(scrollbar != null)
+        audioSource.volume = audioSoundPower; // 음악 크기에 따라 볼륨 조절
+
+        if(scrollbar != null) // 예외 처리
         {
-            musicCurrentTime = musicLength * scrollbar.value;
-            barCurrentTimeText.text = (musicLength * scrollbar.value).ToString("0.0");
+            musicCurrentTime = musicLength * scrollbar.value; // 비율에 따라서 진행도 바를 움직인다
+
+            barCurrentTimeText.text = (musicLength * scrollbar.value).ToString("0.0"); // 진행도 바 텍스트도 그에 따라 할당
         }
     }
 

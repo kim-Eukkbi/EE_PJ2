@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class CircleRotation : MonoBehaviour
 {
+    // 마우스 위치에 따라서 원을 돌린다
     private void Update()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         Vector3 dir = mousePos - transform.position;
-
-        // 중앙 원 각도 확인 용
-        // Debug.Log(Quaternion.FromToRotation(Vector2.right, dir).eulerAngles);
 
         transform.rotation = Quaternion.FromToRotation(Vector2.up, dir);
     }

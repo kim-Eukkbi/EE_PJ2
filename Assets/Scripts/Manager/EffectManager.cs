@@ -6,6 +6,8 @@ public class EffectManager : MonoBehaviour
 {
     public static EffectManager instance;
 
+    public ParticleSystem circleEffect;
+
     private void Awake()
     {
         if(instance != null)
@@ -15,6 +17,9 @@ public class EffectManager : MonoBehaviour
         instance = this;
     }
 
-
+    public void SpawnCircle()
+    {
+        circleEffect.Play();
+    }
 
 }

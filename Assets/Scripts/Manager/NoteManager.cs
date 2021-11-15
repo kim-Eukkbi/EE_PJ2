@@ -8,16 +8,16 @@ public class NoteManager : MonoBehaviour
 {
     public static NoteManager instance;
 
-    public GameObject dcNotePrefab;
-    public GameObject singleNotePrefab;
-    public GameObject longNotePrefab;
-    public Transform parent;
+    public GameObject dcNotePrefab; // dcNote의 오브젝트
+    public GameObject singleNotePrefab; // SingleNote의 오브젝트
+    public GameObject longNotePrefab; // LongNote의 오브젝트
+    public Transform parent; // 모든 노트들의 부모
 
-    public float noteSpeed = 1;
-    public float noteRenderLength = 10f;
+    public float noteSpeed = 1; // 노트의 스피드
+    public float noteRenderLength = 10f; // 원 기준에서 노트 활성화, 비활성화의 길이
 
-    private List<Note> notes;
-    private List<Note> havingNotes;
+    private List<Note> notes; // 노트들을 담을 리스트
+    private List<Note> havedNotes; // 시작 했을 때 가지고 있던 노트들을 임시로 담아놓는 리스트
 
     /// <summary>
     /// DC == DontClick,
@@ -40,7 +40,7 @@ public class NoteManager : MonoBehaviour
         instance = this;
 
         notes = new List<Note>();
-        havingNotes = new List<Note>();
+        havedNotes = new List<Note>();
     }
 
     private void Start()
@@ -128,12 +128,12 @@ public class NoteManager : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < havingNotes.Count; i++)
+            for (int i = 0; i < havedNotes.Count; i++)
             {
-                notes.Add(havingNotes[i]);
+                notes.Add(havedNotes[i]);
             }
 
-            havingNotes.Clear();
+            havedNotes.Clear();
         }
     }
 
@@ -195,7 +195,7 @@ public class NoteManager : MonoBehaviour
     {
         for(int i = 0; i < notes.Count; i++)
         {
-            havingNotes.Add(notes[i]);
+            havedNotes.Add(notes[i]);
         }
     }
 
