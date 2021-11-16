@@ -10,6 +10,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource audioSource; // 플레이 할 오브젝트
     [Range(0, 1)]
     public float audioSoundPower; // 음악 소리의 크기
+    public Scrollbar audioPitchBar;
+    public Text pitchText;
     public AudioClip audioClip; // 플레이 할 음악
     public Text barCurrentTimeText; // 진행도 바의 시간 텍스트
 
@@ -18,6 +20,8 @@ public class AudioManager : MonoBehaviour
     public float musicLength = 0; // 음악 길이
 
     public float musicCurrentTime = 0f; // 지금 음악 진행도
+
+    public float audioPitch = 0;
 
     private void Awake()
     {
@@ -28,14 +32,21 @@ public class AudioManager : MonoBehaviour
         instance = this;
 
         audioSource.clip = audioClip;
-        musicLength = audioSource.clip.length;
+        audioPitch = Mathf.Clamp(audioPitchBar.value * 3, 0.2f, 3);
+        musicLength = audioSource.clip.length / audioPitch;
+
+
+        // 잠시 테스트 ------------------------------------------------------------------------------------------------------------------------------
     }
 
     private void Update()
     {
         audioSource.volume = audioSoundPower; // 음악 크기에 따라 볼륨 조절
 
-        if(scrollbar != null) // 예외 처리
+        SetPitch();
+        musicLength = audioSource.clip.length / audioPitch;
+
+        if (scrollbar != null) // 예외 처리
         {
             musicCurrentTime = musicLength * scrollbar.value; // 비율에 따라서 진행도 바를 움직인다
 
@@ -48,7 +59,7 @@ public class AudioManager : MonoBehaviour
     {
         if(musicCurrentTime < musicLength)
         {
-            audioSource.time = musicCurrentTime;
+            audioSource.time = musicCurrentTime * audioPitch;
             audioSource.Play();
         }
     }
@@ -70,5 +81,12 @@ public class AudioManager : MonoBehaviour
         }
 
         scrollbar.value = GameManager.instance.currentTime / musicLength;
+    }
+
+    private void SetPitch()
+    {
+        audioPitch = Mathf.Clamp(audioPitchBar.value * 3, 0.2f, 3);
+        audioSource.pitch = audioPitch;
+        pitchText.text = audioPitch.ToString("0.000000");
     }
 }

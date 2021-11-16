@@ -46,7 +46,6 @@ public class JudgementManager : MonoBehaviour
                 whatIsSingleNote | whatIsLongNote)){
         }else if (NoteJudgementCheck(true, false, false, whatIsDCNote))
         {
-            Debug.Log("¿Ã∞«∞°??");
             NoteJudgementCheck(true, false, false, whatIsDCNote);
         }
     }
@@ -87,7 +86,7 @@ public class JudgementManager : MonoBehaviour
             Debug.Log("LONG NOTE IS HEREEEEEEEEEEE");
         }
 
-        float judgementTime = Mathf.Abs(GameManager.instance.currentTime - note.time);
+        float judgementTime = Mathf.Abs(GameManager.instance.currentTime - note.time / AudioManager.instance.audioPitch);
 
         if (perfect && judgementTime < perfectJudgement)
         {

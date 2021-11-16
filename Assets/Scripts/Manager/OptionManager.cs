@@ -17,6 +17,7 @@ public class OptionManager : MonoBehaviour
     public GameObject gameInformationPanel;
     public InputField noteSpeedIF;
     public InputField countDownIF;
+    public Button pitchResetButton;
 
     [Header("Note Information")]
     public GameObject noteInformationPanel;
@@ -162,6 +163,12 @@ public class OptionManager : MonoBehaviour
                     {
                         GameManager.instance.countDownTime = result;
                     }
+
+                    pitchResetButton.onClick.AddListener(() =>
+                    {
+                        AudioManager.instance.audioPitchBar.value = 1 / (float)3;
+                        AudioManager.instance.audioPitch = 1;
+                    });
                 }
             }
 
@@ -181,7 +188,7 @@ public class OptionManager : MonoBehaviour
                             Note note = SelectNoteManager.instance.SelectNote;
 
                             note.angle = angle;
-                            note.time = time;
+                            note.time = time * AudioManager.instance.audioPitch;
                             note.noteEnum = (NoteManager.NoteEnum)(noteEnumDropdown.value + 7);
 
                             SelectNoteManager.instance.SelectNote = note;
@@ -248,7 +255,7 @@ public class OptionManager : MonoBehaviour
         }
 
         noteAngleIF.text = note.angle.ToString();
-        noteTimeIF.text = note.time.ToString();
+        noteTimeIF.text = (note.time / AudioManager.instance.audioPitch).ToString();
         noteEnumDropdown.value = ((int)note.noteEnum) - 7;
 
         UISetActive(2);

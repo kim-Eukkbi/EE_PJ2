@@ -35,7 +35,9 @@ public class AudioSpectrum : MonoBehaviour
                 Vector3 circleScreenPosition = Camera.main.WorldToScreenPoint(GameManager.instance.circle.transform.position); // 원의 위치 가져오기
 
                 spectrumBars[i, n].transform.localScale = new Vector3(barSize, 0, 1); // 스펙트럼 막대기의 크기 할당
-                spectrumBars[i, n].transform.position = circleScreenPosition + spectrumBars[i, n].transform.up * 70; // 원의 위치 + 스펙트럼 막대기의 방향 벡터
+                spectrumBars[i, n].transform.position = circleScreenPosition 
+                                                      + spectrumBars[i, n].transform.up 
+                                                      * 70; // 원의 위치 + 스펙트럼 막대기의 방향 벡터
             }
         }
     }

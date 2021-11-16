@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         while (waitTime >= 0) // 카운트 다운이 끝날때까지 반복
         {
             countDownText.text = Mathf.CeilToInt(waitTime).ToString();
-            waitTime -= Time.deltaTime;
+            waitTime -= Time.deltaTime * 2;
             yield return null;
         }
 

@@ -86,7 +86,7 @@ public class ConvenienceManager : MonoBehaviour
 
                     note.gameObject.SetActive(false);
 
-                    note.time = GameManager.instance.currentTime;
+                    note.time = GameManager.instance.currentTime * AudioManager.instance.audioPitch;
                     note.angle = circleAngle;
 
                     startingNotes.Add(note);

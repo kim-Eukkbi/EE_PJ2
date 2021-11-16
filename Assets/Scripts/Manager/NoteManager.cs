@@ -78,7 +78,8 @@ public class NoteManager : MonoBehaviour
         for (int i = 0; i < notes.Count; i++)
         {
             // 원에 노트가 닿지않았고, 노트의 최대 렌더거리보다 안쪽에 있다면 그 노트는 활성화
-            if (!(notes[i].time < AudioManager.instance.musicCurrentTime || !(notes[i].time < AudioManager.instance.musicCurrentTime + noteRenderLength)))
+            if (!(notes[i].time / AudioManager.instance.audioPitch < AudioManager.instance.musicCurrentTime 
+                || !(notes[i].time / AudioManager.instance.audioPitch < AudioManager.instance.musicCurrentTime + noteRenderLength)))
             {
                 notes[i].gameObject.SetActive(true);
             }
@@ -88,9 +89,11 @@ public class NoteManager : MonoBehaviour
             }
 
             // 노트의 시간 - 지금 시간을 빼서 그에 따른 위치에 이동시킨다
-            notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time - AudioManager.instance.musicCurrentTime);
-            notes[i].transform.position += notes[i].transform.up *
-                                    (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
+            notes[i].transform.position = notes[i].transform.up
+                                        * instance.noteSpeed
+                                        * (notes[i].time / AudioManager.instance.audioPitch - AudioManager.instance.musicCurrentTime);
+            notes[i].transform.position += notes[i].transform.up
+                                        * (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
         }
     }
 
@@ -143,7 +146,8 @@ public class NoteManager : MonoBehaviour
         for(int i = 0; i < notes.Count; i++)
         {
             // 원에 노트가 닿거나, 노트의 최대 렌더거리보다 멀리있다면 그 노트는 비활성화
-            if (notes[i].time < AudioManager.instance.musicCurrentTime || !(notes[i].time < AudioManager.instance.musicCurrentTime + noteRenderLength))
+            if (notes[i].time / AudioManager.instance.audioPitch < AudioManager.instance.musicCurrentTime 
+           || !(notes[i].time / AudioManager.instance.audioPitch < AudioManager.instance.musicCurrentTime + noteRenderLength))
             {
                 notes[i].gameObject.SetActive(false);
                 continue;
@@ -153,7 +157,7 @@ public class NoteManager : MonoBehaviour
                 notes[i].gameObject.SetActive(true);
             }
 
-            notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time - AudioManager.instance.musicCurrentTime);
+            notes[i].transform.position = notes[i].transform.up * instance.noteSpeed * (notes[i].time / AudioManager.instance.audioPitch - AudioManager.instance.musicCurrentTime);
             notes[i].transform.position += notes[i].transform.up *
                                     (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
         }
@@ -210,7 +214,8 @@ public class NoteManager : MonoBehaviour
         {
             note.transform.rotation = Quaternion.Euler(0, 0, note.angle);
 
-            note.transform.position = note.transform.up * instance.noteSpeed * (note.time - AudioManager.instance.musicCurrentTime);
+            Debug.Log(note.time);
+            note.transform.position = note.transform.up * instance.noteSpeed * (note.time / AudioManager.instance.audioPitch - AudioManager.instance.musicCurrentTime);
             note.transform.position += note.transform.up *
                                     (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
         }
