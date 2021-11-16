@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviour
         IsKey = Input.GetKey(KeyCode.D);// 잠시 편한 키로 커스텀 해놓았슴
 
         SingleNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.S);
-        DCNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.A);
+        DCNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.X);
         LongNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.D);
         RemoveNoteKeyDown = Input.GetKeyDown(KeyCode.R);
         isGameStartKeyDown = Input.GetKeyDown(KeyCode.Return);

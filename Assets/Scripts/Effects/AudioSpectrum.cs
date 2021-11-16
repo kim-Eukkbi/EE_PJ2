@@ -57,4 +57,15 @@ public class AudioSpectrum : MonoBehaviour
             }
         }
     }
+
+    public void ChangeSpectrumColor(Color color)
+    {
+        for (int n = 0; n < barDetail; n++)
+        {
+            for (int i = 0; i < spectrumBarCount; i++)
+            {
+                spectrumBars[i, n].color = new Color(color.r, color.g, color.b, 1);
+            }
+        }
+    }
 }

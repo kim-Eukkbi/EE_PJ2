@@ -14,6 +14,8 @@ public class JudgementManager : MonoBehaviour
     public float greatJudgement = 0.105f;
     public float missJudgement = 2;
 
+    public AudioSpectrum audioSpectrum;
+
     private Vector3 perfectJudgementSize;
     private Vector3 greatJudgementSize;
     private Vector3 missJudgementSize;
@@ -123,18 +125,21 @@ public class JudgementManager : MonoBehaviour
     {
         NoteManager.instance.RemoveNote(note);
         ComboManager.instance.ComboUp();
+        audioSpectrum.ChangeSpectrumColor(Color.yellow);
     }
 
     private void Great(Note note)
     {
         NoteManager.instance.RemoveNote(note);
         ComboManager.instance.ComboUp();
+        audioSpectrum.ChangeSpectrumColor(Color.green);
     }
 
     private void Miss(Note note)
     {
         NoteManager.instance.RemoveNote(note);
         ComboManager.instance.ComboReset();
+        audioSpectrum.ChangeSpectrumColor(Color.red);
         //ComboManager.ComboUp();
     }
 

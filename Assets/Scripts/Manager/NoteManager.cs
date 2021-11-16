@@ -214,7 +214,6 @@ public class NoteManager : MonoBehaviour
         {
             note.transform.rotation = Quaternion.Euler(0, 0, note.angle);
 
-            Debug.Log(note.time);
             note.transform.position = note.transform.up * instance.noteSpeed * (note.time / AudioManager.instance.audioPitch - AudioManager.instance.musicCurrentTime);
             note.transform.position += note.transform.up *
                                     (GameManager.instance.judgeLineY + GameManager.instance.judgeLine.transform.localScale.y);
