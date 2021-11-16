@@ -64,7 +64,7 @@ public class AudioSpectrum : MonoBehaviour
         {
             for (int i = 0; i < spectrumBarCount; i++)
             {
-                spectrumBars[i, n].color = new Color(color.r, color.g, color.b, 1);
+                spectrumBars[i, n].color = new Color(color.r, color.g, color.b, 0.8f);
             }
         }
     }

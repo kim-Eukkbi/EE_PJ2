@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
@@ -15,21 +16,22 @@ public class ButtonManager : MonoBehaviour
         {
             buttons.Add(item);
         }
-
-        buttons[0].transform.DOMove(buttons[0].transform.position, .5f);
        
         SetUI();
+
+        buttons[0].onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene("MusicSelect");
+        });
+
+        buttons[1].onClick.AddListener(() =>
+        {
+            Application.Quit();
+        });
     }
 
     private void SetUI()
     {
-        Sequence UIseq = DOTween.Sequence();
-
-        float j = 0;
-        for (int i =0; i < buttons.Count;i++)
-        {
-            UIseq.Insert(j,buttons[i].transform.DOLocalMoveX(.1f,.5f));
-            j += .15f;
-        }
+        transform.DOMoveX(-10f, 1);
     }
 }

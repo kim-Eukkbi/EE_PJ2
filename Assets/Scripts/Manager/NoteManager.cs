@@ -41,6 +41,7 @@ public class NoteManager : MonoBehaviour
 
         notes = new List<Note>();
         havedNotes = new List<Note>();
+
     }
 
     private void Start()
@@ -53,6 +54,7 @@ public class NoteManager : MonoBehaviour
         SetNotePattern();
 
         notes.Sort((x, y) => x.time.CompareTo(y.time));
+
     }
 
     private void Update()
@@ -102,32 +104,25 @@ public class NoteManager : MonoBehaviour
     {
         // 스테이지의 이름을 가진 파일을 가져와서 생성 하면 좋지 않을까?
 
-        if(!GameManager.instance.isEditerMode)
+        if (!GameManager.instance.isEditerMode)
         {
             string fileName = GameManager.instance.stageName;
-            string filePath = SaveAndLoadManager.instance.GetFilePath();
 
-            if(filePath == SaveAndLoadManager.instance.nullFilePath)
+            TextAsset json = Resources.Load(fileName + "Text") as TextAsset;
+
+            Debug.Log(fileName);
+
+            NoteVOList noteList = JsonUtility.FromJson<NoteVOList>("{\"notes\":" + json.ToString() + "}");
+
+            NotesClear();
+
+            // 받은 json의 noteEnum에 따라서 다른 노트들을 생성한다
+            for (int i = 0; i < noteList.notes.Length; i++)
             {
-                return;
+                SetSpawnNote(noteList.notes[i].noteEnum, noteList.notes[i].angle, noteList.notes[i].time);
             }
 
-            if (File.Exists(filePath + GameManager.instance.stageName))
-            {
-                string json = File.ReadAllText(filePath + fileName);
-
-                NoteVOList noteList = JsonUtility.FromJson<NoteVOList>("{\"notes\":" + json + "}");
-
-                NotesClear();
-
-                // 받은 json의 noteEnum에 따라서 다른 노트들을 생성한다
-                for (int i = 0; i < noteList.notes.Length; i++)
-                {
-                    SetSpawnNote(noteList.notes[i].noteEnum, noteList.notes[i].angle, noteList.notes[i].time);
-                }
-
-                NotesSort();
-            }
+            NotesSort();
         }
         else
         {

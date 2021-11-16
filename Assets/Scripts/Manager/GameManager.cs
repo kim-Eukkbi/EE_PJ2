@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviour
         instance = this;
 
         waitTimeTemp = countDownTime;
+
+        stageName = RecvManager.instance.stageName;
     }
 
     void Update()
@@ -92,9 +95,18 @@ public class GameManager : MonoBehaviour
 
         isGameStart = false; // 게임중 아님
 
+        if(!isEditerMode)
+        {
+            SceneManager.LoadScene("MusicSelect");
+        }
+
         AudioManager.instance.MusicStop(); // 음악 멈추기
         NoteManager.instance.NotesReset(); // 노트 리셋
-        ConvenienceManager.instance.SetStartingNotes(); // 에디터 모드에서 클릭 한 노트 셋팅
+        
+        if(ConvenienceManager.instance.SpawnNotesToggle != null)
+        {
+            ConvenienceManager.instance.SetStartingNotes(); // 에디터 모드에서 클릭 한 노트 셋팅
+        }
         ComboManager.instance.ComboReset(); // 콤보 리셋
 
         instance.countDownTime = instance.waitTimeTemp; // 카운트 다운 리셋

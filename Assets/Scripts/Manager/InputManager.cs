@@ -25,9 +25,9 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        IsKeyDown = Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.V); // Àá½Ã ÆíÇÑ Å°·Î Ä¿½ºÅÒ ÇØ³õ¾Ò½¿
+        IsKeyDown = Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.V); // Àá½Ã ÆíÇÑ Å°·Î Ä¿½ºÅÒ ÇØ³õ¾Ò½¿
 
-        IsKey = Input.GetKey(KeyCode.D);// Àá½Ã ÆíÇÑ Å°·Î Ä¿½ºÅÒ ÇØ³õ¾Ò½¿
+        IsKey = Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.V);// Àá½Ã ÆíÇÑ Å°·Î Ä¿½ºÅÒ ÇØ³õ¾Ò½¿
 
         SingleNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.S);
         DCNoteSpawnKeyDown = Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.X);
